@@ -1,0 +1,26 @@
+# Core Web Framework
+flask
+flask-cors
+python-dotenv
+
+# PDF & OCR
+pypdf
+pdf2image
+pytesseract
+
+# Text Utilities
+langdetect
+
+# AI Integrations
+huggingface_hub
+langchain
+langchain-community
+langchain-core
+langchain-groq
+langchain-ollama
+
+# Vector DB
+faiss-cpu
+
+# Optional (for Groq/OpenAI etc. if needed)
+openai

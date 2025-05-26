@@ -1,0 +1,51 @@
+# Python cache
+__pycache__/
+*.py[cod]
+*.pyo
+
+# Virtual environment
+venv/
+env/
+ENV/
+
+# Environment variables
+.env
+
+# OS-specific files
+.DS_Store
+Thumbs.db
+
+# PyInstaller
+*.spec
+build/
+dist/
+
+# Jupyter Notebook checkpoints
+.ipynb_checkpoints
+
+# Logs
+*.log
+
+# PDF and other user-uploaded files
+*.pdf
+pdfs/
+
+# Vector stores or local databases
+vectorstore/
+*.db
+*.sqlite
+*.pkl
+
+# VSCode or IDE settings
+.vscode/
+.idea/
+
+# Test results or coverage
+htmlcov/
+.tox/
+.nox/
+.coverage
+coverage.xml
+
+# Node modules (if any JS tooling)
+node_modules/
