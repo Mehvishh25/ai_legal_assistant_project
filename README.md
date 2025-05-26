@@ -32,30 +32,23 @@ A smart, AI-powered web application that simplifies legal information access. Us
 
 ---
 
-## 🗂️ Project Structure
-
-ai_legal_assistant_project/
-├── app.py                  # Main Flask application that registers routes and blueprints
-├── chatbot.py              # Handles /chat route for general legal chatbot (Hugging Face)
-├── pdf_qa.py               # Handles /pdf-qa route for answering PDF-specific legal questions
-├── summary.py              # Handles /summarize route to summarize uploaded PDFs
-├── legal_drafter.py        # (Optional) Generates legal documents via Google Gemini API
-│
-├── .env                    # Environment variables file (API keys, ignored by Git)
-├── .gitignore              # Specifies files and folders to exclude from Git tracking
-├── requirements.txt        # Lists Python dependencies to install via pip
-│
-├── templates/              # All frontend HTML pages served by Flask
-│   ├── index.html          # Main homepage with feature navigation
-│   ├── blog.html           # Blog page with legal education videos
-│   ├── pdf-summary.html    # UI for the PDF summarizer feature
-│   ├── pdf-qa.html         # UI for asking questions about uploaded PDFs
-│   └── legal-chat.html     # Chat interface for general legal chatbot
-│
-├── static/                 # (Optional) Folder for CSS, JS, images (if needed)
-│   └── style.css           # Example: custom styles
-│
-├── venv/                   # Python virtual environment (ignored from Git)
-│
-├── pdfs/                   # (Optional) Folder to temporarily store uploaded PDFs
-├── vectorstore/            # (Optional) For storing document embeddings if added later
+🗂️ Project Structure (GitHub-Friendly Table Version)
+File/Folder	Purpose
+app.py	Main Flask app that registers routes and blueprints
+chatbot.py	Handles /chat route for the general legal chatbot (Hugging Face)
+pdf_qa.py	Handles /pdf-qa route for PDF-specific Q&A
+summary.py	Handles /summarize route for summarizing legal PDFs
+legal_drafter.py	(Optional) Document drafting via Google Gemini (if used)
+.env	API keys and environment variables (excluded from Git)
+.gitignore	Specifies files/folders to ignore in Git
+requirements.txt	Lists Python package dependencies
+templates/	HTML pages served by Flask
+├── index.html	Homepage with feature overview
+├── blog.html	Page displaying educational legal videos
+├── pdf-summary.html	UI for the PDF summarizer tool
+├── pdf-qa.html	UI for PDF-based question answering
+└── legal-chat.html	UI for general chatbot
+static/	(Optional) CSS, JS, images
+venv/	Python virtual environment (ignored in Git)
+pdfs/	(Optional) Temporary PDF uploads
+vectorstore/	(Optional) Embedding store if vector DB is added
