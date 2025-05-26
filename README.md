@@ -34,3 +34,28 @@ A smart, AI-powered web application that simplifies legal information access. Us
 
 ## 🗂️ Project Structure
 
+ai_legal_assistant_project/
+├── app.py                  # Main Flask application that registers routes and blueprints
+├── chatbot.py              # Handles /chat route for general legal chatbot (Hugging Face)
+├── pdf_qa.py               # Handles /pdf-qa route for answering PDF-specific legal questions
+├── summary.py              # Handles /summarize route to summarize uploaded PDFs
+├── legal_drafter.py        # (Optional) Generates legal documents via Google Gemini API
+│
+├── .env                    # Environment variables file (API keys, ignored by Git)
+├── .gitignore              # Specifies files and folders to exclude from Git tracking
+├── requirements.txt        # Lists Python dependencies to install via pip
+│
+├── templates/              # All frontend HTML pages served by Flask
+│   ├── index.html          # Main homepage with feature navigation
+│   ├── blog.html           # Blog page with legal education videos
+│   ├── pdf-summary.html    # UI for the PDF summarizer feature
+│   ├── pdf-qa.html         # UI for asking questions about uploaded PDFs
+│   └── legal-chat.html     # Chat interface for general legal chatbot
+│
+├── static/                 # (Optional) Folder for CSS, JS, images (if needed)
+│   └── style.css           # Example: custom styles
+│
+├── venv/                   # Python virtual environment (ignored from Git)
+│
+├── pdfs/                   # (Optional) Folder to temporarily store uploaded PDFs
+├── vectorstore/            # (Optional) For storing document embeddings if added later
