@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Legal Document Assistant</title>
+
+  
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            darkgreen: '#192819',
+            beige: '#F5F1E3',
+            accentgreen: '#2F5D50',
+          },
+        },
+      },
+    };
+  </script>
+
+  <link
+    rel="stylesheet"
+    href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css"
+    crossorigin="anonymous"
+    referrerpolicy="no-referrer"
+  />
+
+  <style>
+    body {
+      background-color: #192819;
+      color: #f5f1e3;
+      font-family: 'Inter', sans-serif;
+    }
+  </style>
+</head>
+<body class="flex flex-col min-h-screen">
+
+  <!-- Main Content -->
+  <main class="flex-grow container mx-auto px-6 py-12 max-w-5xl">
+    <section class="bg-gradient-to-br from-green-800 to-green-900 rounded-3xl p-10 shadow-2xl">
+
+      <!-- Header -->
+      <div class="flex items-center space-x-4 mb-8">
+        <div class="w-16 h-16 bg-beige text-darkgreen rounded-full flex items-center justify-center text-3xl">
+          <i class="fas fa-file-signature"></i>
+        </div>
+        <h1 class="text-4xl font-bold">Draft Legal Documents</h1>
+      </div>
+
+      <p class="mb-10 text-beige/90 leading-relaxed text-lg">
+        Choose a document type and provide the required details. We'll help you draft professional legal documents instantly.
+      </p>
+
+      <!-- Button Selection -->
+      <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-6 mb-10">
+        <button onclick="selectDocType('nda')" class="bg-beige/10 hover:bg-accentgreen/60 transition border border-beige rounded-xl p-6 text-center shadow text-beige focus:outline-none focus:ring-2 focus:ring-beige">
+          <div class="text-3xl mb-2">📄</div>
+          <div class="text-lg font-semibold">NDA</div>
+        </button>
+        <button onclick="selectDocType('lease')" class="bg-beige/10 hover:bg-accentgreen/60 transition border border-beige rounded-xl p-6 text-center shadow text-beige focus:outline-none focus:ring-2 focus:ring-beige">
+          <div class="text-3xl mb-2">🏠</div>
+          <div class="text-lg font-semibold">Lease</div>
+        </button>
+        <button onclick="selectDocType('will')" class="bg-beige/10 hover:bg-accentgreen/60 transition border border-beige rounded-xl p-6 text-center shadow text-beige focus:outline-none focus:ring-2 focus:ring-beige">
+          <div class="text-3xl mb-2">⚖️</div>
+          <div class="text-lg font-semibold">Will</div>
+        </button>
+        <button onclick="selectDocType('contract')" class="bg-beige/10 hover:bg-accentgreen/60 transition border border-beige rounded-xl p-6 text-center shadow text-beige focus:outline-none focus:ring-2 focus:ring-beige">
+          <div class="text-3xl mb-2">📑</div>
+          <div class="text-lg font-semibold">Contract</div>
+        </button>
+      </div>
+
+      <!--Form -->
+      <form id="docForm" class="space-y-6 hidden" aria-live="polite"></form>
+
+      <!-- Submit Button -->
+      <button id="submitBtn"
+        class="mt-6 bg-accentgreen text-beige px-6 py-3 rounded-md hover:bg-green-700 transition hidden font-semibold"
+        type="button">
+        Generate Document
+      </button>
+
+      <div id="output" class="mt-10 bg-beige/10 p-6 rounded-lg text-beige text-sm whitespace-pre-wrap"></div>
+    </section>
+  </main>
+
+
+  <footer class="bg-darkgreen text-beige border-t border-beige px-6 py-8 mt-12 text-center text-sm">
+    © 2025 PLA Inc. All rights reserved.
+  </footer>
+
+  <!-- Script -->
+  <script>
+    const form = document.getElementById('docForm');
+    const submitBtn = document.getElementById('submitBtn');
+    const output = document.getElementById('output');
+
+    const fieldsByDocType = {
+      nda: [
+        { label: 'Party A', id: 'partyA', placeholder: 'e.g., ABC Corp' },
+        { label: 'Party B', id: 'partyB', placeholder: 'e.g., XYZ Ltd' },
+        { label: 'Purpose of NDA', id: 'purpose', placeholder: 'e.g., Protect confidential info' },
+        { label: 'Duration', id: 'duration', placeholder: 'e.g., 2 years' }
+      ],
+      lease: [
+        { label: 'Landlord Name', id: 'landlord', placeholder: 'e.g., John Doe' },
+        { label: 'Tenant Name', id: 'tenant', placeholder: 'e.g., Jane Smith' },
+        { label: 'Property Address', id: 'propertyAddress', placeholder: 'e.g., 123 Main St' },
+        { label: 'Lease Term', id: 'leaseTerm', placeholder: 'e.g., 12 months' },
+        { label: 'Monthly Rent', id: 'monthlyRent', placeholder: 'e.g., $1200' }
+      ],
+      will: [
+        { label: 'Your Full Name', id: 'fullName', placeholder: 'e.g., Alice Johnson' },
+        { label: 'Beneficiaries', id: 'beneficiaries', placeholder: 'e.g., Bob Johnson, Carol White' },
+        { label: 'Executor Name', id: 'executor', placeholder: 'e.g., David Black' }
+      ],
+      contract: [
+        { label: 'Party A', id: 'partyA', placeholder: 'e.g., Company A' },
+        { label: 'Party B', id: 'partyB', placeholder: 'e.g., Company B' },
+        { label: 'Purpose of Contract', id: 'purpose', placeholder: 'e.g., Supply goods' },
+        { label: 'Payment Terms', id: 'paymentTerms', placeholder: 'e.g., Net 30 days' },
+        { label: 'Duration', id: 'duration', placeholder: 'e.g., 1 year' }
+      ],
+    };
+
+    function createInputField({ label, id, placeholder }) {
+      const wrapper = document.createElement('div');
+      wrapper.className = 'flex flex-col';
+
+      const labelEl = document.createElement('label');
+      labelEl.htmlFor = id;
+      labelEl.textContent = label;
+      labelEl.className = 'mb-1 font-medium text-beige';
+
+      const inputEl = document.createElement('input');
+      inputEl.type = 'text';
+      inputEl.id = id;
+      inputEl.name = id;
+      inputEl.placeholder = placeholder;
+      inputEl.required = true;
+      inputEl.className = 'bg-darkgreen border border-beige text-beige placeholder-beige/60 rounded-md p-2 focus:outline-none focus:ring-2 focus:ring-accentgreen';
+
+      wrapper.appendChild(labelEl);
+      wrapper.appendChild(inputEl);
+
+      return wrapper;
+    }
+
+    function selectDocType(docType) {
+      form.innerHTML = '';
+      output.textContent = '';
+
+      const fields = fieldsByDocType[docType];
+      if (fields) {
+        form.classList.remove('hidden');
+        submitBtn.classList.remove('hidden');
+
+        fields.forEach(field => {
+          const inputField = createInputField(field);
+          form.appendChild(inputField);
+        });
+
+        submitBtn.onclick = () => {
+          if (!form.checkValidity()) {
+            form.reportValidity();
+            return;
+          }
+
+          const formData = new FormData(form);
+          const data = { documentType: docType };
+          for (const [key, value] of formData.entries()) {
+            data[key] = value.trim();
+          }
+
+          output.textContent = JSON.stringify(data, null, 2);
+
+          //  Send this data to backend or AI model
+        };
+      }
+    }
+  </script>
+</body>
+</html>
