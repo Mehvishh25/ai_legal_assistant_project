@@ -24,3 +24,6 @@ faiss-cpu
 
 # Optional (for Groq/OpenAI etc. if needed)
 openai
+
+#google-generative-ai
+google-generativeai
