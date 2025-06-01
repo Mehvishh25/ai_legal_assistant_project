@@ -1,10 +1,10 @@
-# app.py
 from flask import Flask, render_template
 from dotenv import load_dotenv
 from summary import summary_bp
 from chatbot import chatbot_bp
 from pdf_qa import pdfqa_bp
 from legal_drafter import drafter_bp
+from case_finder import case_finder_bp  # ✅ NEW
 import os
 
 # Load environment variables from .env
@@ -18,6 +18,7 @@ app.register_blueprint(summary_bp)
 app.register_blueprint(chatbot_bp)
 app.register_blueprint(pdfqa_bp)
 app.register_blueprint(drafter_bp)
+app.register_blueprint(case_finder_bp)  # ✅ NEW
 
 # Routes for frontend pages
 @app.route('/')
@@ -44,7 +45,10 @@ def legal_chat():
 def legal_doc_drafter():
     return render_template("legal-doc-drafter.html")
 
-# ✅ Health check route
+@app.route('/case-finder')  # ✅ NEW ROUTE
+def case_finder():
+    return render_template("legal-case-finder.html")
+
 @app.route('/health')
 def health():
     return "✅ Server is running", 200

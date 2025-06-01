@@ -27,3 +27,10 @@ openai
 
 #google-generative-ai
 google-generativeai
+
+# for case_finder
+flask
+google-generativeai
+beautifulsoup4
+requests
+python-dotenv
