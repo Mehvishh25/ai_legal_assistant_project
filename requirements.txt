@@ -29,8 +29,10 @@ openai
 google-generativeai
 
 # for case_finder
-flask
-google-generativeai
-beautifulsoup4
-requests
+Flask
 python-dotenv
+selenium
+webdriver-manager
+beautifulsoup4
+google-generativeai
+
