@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Adversarial Argument Generator - LegalHawk</title>
+
+  <!-- Tailwind CSS -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          fontFamily: {
+            pixel: ['"Press Start 2P"', 'monospace'],
+          },
+          colors: {
+            darkgreen: '#192819',
+            beige: '#F5F1E3',
+            accentgreen: '#2F5D50',
+            neon: '#00FFB2',
+            pixelgray: '#1F1F1F',
+          },
+        },
+      },
+    };
+  </script>
+
+  <!-- Pixel Font -->
+  <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
+
+  <!-- FontAwesome -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css" crossorigin="anonymous" />
+
+  <style>
+    body {
+      background-color: #192819;
+      color: #f5f1e3;
+      font-family: 'Press Start 2P', monospace;
+      font-size: 10px;
+    }
+
+    .neon-text {
+      color: #00FFB2;
+      text-shadow: 0 0 6px #00FFB2;
+    }
+
+    .glow-hover:hover {
+      text-shadow: 0 0 10px #00FFB2, 0 0 20px #00FFB2;
+    }
+
+    .pixel-border {
+      border: 3px solid #00FFB2;
+      box-shadow: 4px 4px 0 #000;
+    }
+
+    input, button, textarea {
+      font-family: 'Press Start 2P', monospace !important;
+    }
+  </style>
+</head>
+
+<body class="flex flex-col min-h-screen bg-darkgreen text-beige font-pixel tracking-tighter">
+  <main class="flex-grow container mx-auto px-6 py-12 max-w-4xl">
+    <section class="bg-gradient-to-br from-accentgreen to-darkgreen rounded-3xl p-10 shadow-2xl pixel-border">
+      <div class="flex items-center space-x-4 mb-6">
+        <div class="w-16 h-16 bg-beige text-darkgreen rounded-full flex items-center justify-center text-2xl neon-text">
+          <i class="fas fa-balance-scale"></i>
+        </div>
+        <h1 class="text-lg sm:text-xl font-bold neon-text uppercase glow-hover">Adversarial Generator</h1>
+      </div>
+
+      <p class="mb-6 text-beige/80 text-xs">
+        Input your legal case and get both Prosecution and Defense perspectives powered by AI.
+      </p>
+
+      <!-- Input Box -->
+      <textarea id="caseInput" rows="6" placeholder="Enter case description..." class="w-full p-4 rounded-lg text-darkgreen bg-beige/90 text-xs pixel-border mb-4"></textarea>
+
+      <!-- Button -->
+      <button onclick="generateArguments()" class="bg-neon text-darkgreen px-6 py-2 rounded hover:bg-opacity-80 font-bold glow-hover">
+        ⚔️ Generate Arguments
+      </button>
+
+      <!-- Output Box -->
+      <div id="output" class="mt-8 p-6 bg-beige/10 rounded-lg text-beige border border-neon font-pixel text-xs min-h-[120px] whitespace-pre-line">
+        <p class="italic text-center text-beige/70">Your adversarial arguments will appear here.</p>
+      </div>
+    </section>
+  </main>
+
+  <!-- Footer -->
+  <footer class="bg-darkgreen text-beige border-t border-beige px-6 py-8 mt-12 text-center text-xs">
+    © 2025 LegalHawk. All rights reserved.
+  </footer>
+
+  <script>
+    async function generateArguments() {
+      const caseText = document.getElementById("caseInput").value;
+      const output = document.getElementById("output");
+      output.innerHTML = "⏳ Generating arguments...";
+
+      try {
+        const response = await fetch("/adversarial-arguments", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ case: caseText })
+        });
+
+        const data = await response.json();
+        output.innerHTML = data.arguments || `❌ ${data.error}`;
+      } catch (error) {
+        output.innerHTML = "❌ Error: " + error;
+      }
+    }
+  </script>
+</body>
+</html>

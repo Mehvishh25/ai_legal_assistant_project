@@ -6,215 +6,207 @@
   <title>Legal Document Assistant</title>
 
   <!-- Tailwind CSS -->
+  <script src="https://cdn.tailwindcss.com"></script>
   <script>
-    const cdn = document.createElement('script');
-    cdn.src = "https://cdn.tailwindcss.com";
-    cdn.onload = () => {
-      tailwind.config = {
-        theme: {
-          extend: {
-            colors: {
-              darkgreen: '#192819',
-              beige: '#F5F1E3',
-              accentgreen: '#2F5D50',
-            },
+    tailwind.config = {
+      theme: {
+        extend: {
+          fontFamily: {
+            pixel: ['"Press Start 2P"', 'monospace']
           },
-        },
-      };
+          colors: {
+            darkgreen: '#192819',
+            beige: '#F5F1E3',
+            accentgreen: '#2F5D50',
+            pixelgray: '#1F1F1F',
+            neon: '#00FFB2',
+            blockgray: '#2A2A2A',
+          }
+        }
+      }
     };
-    cdn.onerror = () => alert("❌ Tailwind failed to load. Check your internet.");
-    document.head.appendChild(cdn);
   </script>
 
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css" crossorigin="anonymous" referrerpolicy="no-referrer" />
+  <!-- Pixel Font -->
+  <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet" />
+
+  <!-- FontAwesome -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css" crossorigin="anonymous" />
+
+  <!-- html2pdf.js -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+
   <style>
+    html { scroll-behavior: smooth; }
+
     body {
-      background-color: #192819;
-      color: #f5f1e3;
-      font-family: 'Inter', sans-serif;
+      font-family: 'Press Start 2P', monospace;
+      font-size: 10px;
+    }
+
+    .pixel-border {
+      border: 3px solid #00FFB2;
+      box-shadow: 4px 4px 0 #000;
+    }
+
+    .neon-text {
+      color: #00FFB2;
+      text-shadow: 0 0 6px #00FFB2;
+    }
+
+    .glow-hover:hover {
+      text-shadow: 0 0 10px #00FFB2, 0 0 20px #00FFB2;
+    }
+
+    input, button, label {
+      font-family: 'Press Start 2P', monospace !important;
     }
   </style>
 </head>
-<body class="flex flex-col min-h-screen">
-<main class="flex-grow container mx-auto px-6 py-12 max-w-5xl">
-  <section class="bg-gradient-to-br from-green-800 to-green-900 rounded-3xl p-10 shadow-2xl">
-    <div class="flex items-center space-x-4 mb-8">
-      <div class="w-16 h-16 bg-beige text-darkgreen rounded-full flex items-center justify-center text-3xl">
-        <i class="fas fa-file-signature"></i>
+
+<body class="bg-darkgreen text-beige font-pixel tracking-tight">
+  <main class="flex-grow container mx-auto px-6 py-12 max-w-5xl">
+    <section class="bg-blockgray border-4 border-neon rounded-3xl p-10 shadow-2xl">
+
+      <!-- Header -->
+      <div class="flex items-center space-x-4 mb-8">
+        <div class="w-16 h-16 bg-beige text-darkgreen rounded-full flex items-center justify-center text-2xl">
+          <i class="fas fa-file-signature"></i>
+        </div>
+        <h1 class="text-lg sm:text-xl font-bold neon-text glow-hover uppercase">Draft Legal Documents</h1>
       </div>
-      <h1 class="text-4xl font-bold">Draft Legal Documents</h1>
-    </div>
 
-    <p class="mb-10 text-beige/90 leading-relaxed text-lg">
-      Choose a document type and provide all the required details. This helps generate complete and legally appropriate content.
-    </p>
+      <p class="mb-10 text-beige/90 leading-relaxed text-xs glow-hover">
+        Choose a document type and provide all the required details. This helps generate complete and legally appropriate content.
+      </p>
 
-    <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-6 mb-10">
-      <button onclick="selectDocType('nda')" class="doc-type-btn">📄 NDA</button>
-      <button onclick="selectDocType('lease')" class="doc-type-btn">🏠 Lease</button>
-      <button onclick="selectDocType('will')" class="doc-type-btn">⚖️ Will</button>
-      <button onclick="selectDocType('contract')" class="doc-type-btn">📑 Contract</button>
-    </div>
+      <!-- Document Type Buttons -->
+      <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-6 mb-10">
+        <button onclick="selectDocType('nda')" class="doc-type-btn">📄 NDA</button>
+        <button onclick="selectDocType('lease')" class="doc-type-btn">🏠 Lease</button>
+        <button onclick="selectDocType('will')" class="doc-type-btn">⚖️ Will</button>
+        <button onclick="selectDocType('contract')" class="doc-type-btn">📑 Contract</button>
+      </div>
 
-    <form id="docForm" class="space-y-6 hidden" aria-live="polite"></form>
-    <button id="submitBtn" class="mt-6 bg-accentgreen text-beige px-6 py-3 rounded-md hover:bg-green-700 transition hidden font-semibold" type="button">Generate Document</button>
-    <div id="output" class="mt-10 bg-beige/10 p-6 rounded-lg text-beige text-sm whitespace-pre-wrap"></div>
-  </section>
-</main>
+      <!-- Form -->
+      <form id="docForm" class="space-y-6 hidden" aria-live="polite"></form>
+      <button id="submitBtn" class="mt-6 bg-accentgreen text-beige px-6 py-3 rounded-md hover:bg-green-700 transition hidden font-semibold glow-hover" type="button">Generate Document</button>
 
-<footer class="bg-darkgreen text-beige border-t border-beige px-6 py-8 mt-12 text-center text-sm">
-  © 2025 PLA Inc. All rights reserved.
-</footer>
+      <!-- Output -->
+      <div id="outputContainer" class="mt-10 hidden">
+        <div id="output" class="p-6 rounded-lg text-xs whitespace-pre-wrap bg-darkgreen border border-neon pixel-border"></div>
+        <button id="downloadBtn" class="mt-4 bg-neon text-darkgreen px-4 py-2 rounded-md font-bold hover:bg-opacity-90 glow-hover transition">
+          ⬇️ Download PDF
+        </button>
+      </div>
+    </section>
+  </main>
 
-<script>
-const form = document.getElementById('docForm');
-const submitBtn = document.getElementById('submitBtn');
-const output = document.getElementById('output');
-let selectedDocType = null;
+  <!-- Footer -->
+  <footer class="bg-pixelgray text-beige border-t border-beige px-6 py-10 text-center text-xs mt-10">
+    <p>© 2025 LegalHawk. All Rights Reserved.</p>
+  </footer>
 
-const fieldsByDocType = {
-  nda: [
-    { label: 'Effective Date', id: 'date' },
-    { label: 'Party A Name', id: 'party_a' },
-    { label: 'Party A Address', id: 'party_a_address' },
-    { label: 'Party A State', id: 'party_a_state' },
-    { label: 'Party A Signatory Name', id: 'party_a_signatory' },
-    { label: 'Party A Signatory Title', id: 'party_a_title' },
-    { label: 'Party B Name', id: 'party_b' },
-    { label: 'Party B Address', id: 'party_b_address' },
-    { label: 'Party B State', id: 'party_b_state' },
-    { label: 'Party B Signatory Name', id: 'party_b_signatory' },
-    { label: 'Party B Signatory Title', id: 'party_b_title' },
-    { label: 'Purpose of NDA', id: 'purpose' },
-    { label: 'Duration (in years)', id: 'duration' },
-    { label: 'Governing Law State', id: 'governing_law' },
-    { label: 'Witness Name (optional)', id: 'witness_name', optional: true }
-  ],
-  lease: [
-    { label: 'Effective Date', id: 'date' },
-    { label: 'Landlord Name', id: 'landlord' },
-    { label: 'Landlord Address', id: 'landlord_address' },
-    { label: 'Tenant Name', id: 'tenant' },
-    { label: 'Tenant Address', id: 'tenant_address' },
-    { label: 'Property Address', id: 'property_address' },
-    { label: 'Lease Term', id: 'lease_term' },
-    { label: 'Monthly Rent', id: 'monthly_rent' },
-    { label: 'Security Deposit', id: 'security_deposit' },
-    { label: 'Rent Due Date', id: 'rent_due' },
-    { label: 'Late Fee Policy', id: 'late_fee' },
-    { label: 'Utilities Responsibility', id: 'utilities' },
-    { label: 'Governing Law State', id: 'governing_law' }
-  ],
-  will: [
-    { label: 'Date', id: 'date' },
-    { label: 'Full Name of Testator', id: 'full_name' },
-    { label: 'Address of Testator', id: 'address' },
-    { label: 'Beneficiaries (comma-separated)', id: 'beneficiaries' },
-    { label: 'Executor Name', id: 'executor' },
-    { label: 'Executor Address', id: 'executor_address' },
-    { label: 'Guardian for Minors (optional)', id: 'guardian', optional: true },
-    { label: 'Witness 1 Name', id: 'witness1' },
-    { label: 'Witness 1 Address', id: 'witness1_address' },
-    { label: 'Witness 2 Name', id: 'witness2' },
-    { label: 'Witness 2 Address', id: 'witness2_address' },
-    { label: 'Governing Law State', id: 'governing_law' }
-  ],
-  contract: [
-    { label: 'Effective Date', id: 'date' },
-    { label: 'Party A Name', id: 'party_a' },
-    { label: 'Party A Address', id: 'party_a_address' },
-    { label: 'Party A State', id: 'party_a_state' },
-    { label: 'Party A Signatory Name', id: 'party_a_signatory' },
-    { label: 'Party A Signatory Title', id: 'party_a_title' },
-    { label: 'Party B Name', id: 'party_b' },
-    { label: 'Party B Address', id: 'party_b_address' },
-    { label: 'Party B State', id: 'party_b_state' },
-    { label: 'Party B Signatory Name', id: 'party_b_signatory' },
-    { label: 'Party B Signatory Title', id: 'party_b_title' },
-    { label: 'Purpose of Contract', id: 'purpose' },
-    { label: 'Payment Terms', id: 'payment_terms' },
-    { label: 'Duration of Contract', id: 'duration' },
-    { label: 'Dispute Resolution Method (optional)', id: 'dispute_resolution', optional: true },
-    { label: 'Witness Name (optional)', id: 'witness_name', optional: true },
-    { label: 'Governing Law State', id: 'governing_law' }
-  ]
-};
+  <!-- Script -->
+  <script>
+    const form = document.getElementById('docForm');
+    const submitBtn = document.getElementById('submitBtn');
+    const output = document.getElementById('output');
+    const outputContainer = document.getElementById('outputContainer');
+    const downloadBtn = document.getElementById('downloadBtn');
+    let selectedDocType = null;
 
-function createInputField({ label, id, optional }) {
-  const wrapper = document.createElement('div');
-  wrapper.className = 'flex flex-col';
+    const fieldsByDocType = {
+      nda: [ { label: 'Effective Date', id: 'date' }, { label: 'Party A Name', id: 'party_a' }, { label: 'Party A Address', id: 'party_a_address' }, { label: 'Party A State', id: 'party_a_state' }, { label: 'Party A Signatory Name', id: 'party_a_signatory' }, { label: 'Party A Signatory Title', id: 'party_a_title' }, { label: 'Party B Name', id: 'party_b' }, { label: 'Party B Address', id: 'party_b_address' }, { label: 'Party B State', id: 'party_b_state' }, { label: 'Party B Signatory Name', id: 'party_b_signatory' }, { label: 'Party B Signatory Title', id: 'party_b_title' }, { label: 'Purpose of NDA', id: 'purpose' }, { label: 'Duration (in years)', id: 'duration' }, { label: 'Governing Law State', id: 'governing_law' }, { label: 'Witness Name (optional)', id: 'witness_name', optional: true } ],
+      lease: [ { label: 'Effective Date', id: 'date' }, { label: 'Landlord Name', id: 'landlord' }, { label: 'Landlord Address', id: 'landlord_address' }, { label: 'Tenant Name', id: 'tenant' }, { label: 'Tenant Address', id: 'tenant_address' }, { label: 'Property Address', id: 'property_address' }, { label: 'Lease Term (in months)', id: 'lease_term' }, { label: 'Monthly Rent', id: 'monthly_rent' }, { label: 'Rent Due Date', id: 'rent_due' }, { label: 'Security Deposit Amount', id: 'security_deposit' }, { label: 'Late Fee Policy', id: 'late_fee' }, { label: 'Utilities Responsibility', id: 'utilities' }, { label: 'Governing Law State', id: 'governing_law' } ],
+      will: [ { label: 'Date', id: 'date' }, { label: 'Testator Full Name', id: 'full_name' }, { label: 'Testator Address', id: 'address' }, { label: 'Beneficiaries (comma separated)', id: 'beneficiaries' }, { label: 'Executor Name', id: 'executor' }, { label: 'Executor Address', id: 'executor_address' }, { label: 'Guardian Name (optional)', id: 'guardian', optional: true }, { label: 'Witness 1 Name', id: 'witness1' }, { label: 'Witness 1 Address', id: 'witness1_address' }, { label: 'Witness 2 Name', id: 'witness2' }, { label: 'Witness 2 Address', id: 'witness2_address' }, { label: 'Governing Law State', id: 'governing_law' } ],
+      contract: [ { label: 'Effective Date', id: 'date' }, { label: 'Party A Name', id: 'party_a' }, { label: 'Party A Address', id: 'party_a_address' }, { label: 'Party A State', id: 'party_a_state' }, { label: 'Party A Signatory Name', id: 'party_a_signatory' }, { label: 'Party A Signatory Title', id: 'party_a_title' }, { label: 'Party B Name', id: 'party_b' }, { label: 'Party B Address', id: 'party_b_address' }, { label: 'Party B State', id: 'party_b_state' }, { label: 'Party B Signatory Name', id: 'party_b_signatory' }, { label: 'Party B Signatory Title', id: 'party_b_title' }, { label: 'Purpose of Contract', id: 'purpose' }, { label: 'Duration of Contract', id: 'duration' }, { label: 'Payment Terms', id: 'payment_terms' }, { label: 'Dispute Resolution (optional)', id: 'dispute_resolution', optional: true }, { label: 'Witness Name (optional)', id: 'witness_name', optional: true }, { label: 'Governing Law State', id: 'governing_law' } ]
+    };
 
-  const labelEl = document.createElement('label');
-  labelEl.htmlFor = id;
-  labelEl.textContent = optional ? `${label} (Optional)` : label;
-  labelEl.className = 'mb-1 font-medium text-beige';
+    function createInputField({ label, id, optional }) {
+      const wrapper = document.createElement('div');
+      wrapper.className = 'flex flex-col';
 
-  const inputEl = document.createElement('input');
-  inputEl.type = 'text';
-  inputEl.id = id;
-  inputEl.name = id;
-  inputEl.placeholder = optional ? '(Optional)' : '';
-  if (!optional) inputEl.required = true;
-  inputEl.className = 'bg-darkgreen border border-beige text-beige placeholder-beige/60 rounded-md p-2 focus:outline-none focus:ring-2 focus:ring-accentgreen';
+      const labelEl = document.createElement('label');
+      labelEl.htmlFor = id;
+      labelEl.textContent = optional ? `${label} (Optional)` : label;
+      labelEl.className = 'mb-1 font-semibold text-beige';
 
-  wrapper.appendChild(labelEl);
-  wrapper.appendChild(inputEl);
-  return wrapper;
-}
+      const inputEl = document.createElement('input');
+      inputEl.type = 'text';
+      inputEl.id = id;
+      inputEl.name = id;
+      inputEl.placeholder = optional ? '(Optional)' : '';
+      if (!optional) inputEl.required = true;
+      inputEl.className = 'bg-pixelgray border border-beige text-beige placeholder-beige/60 rounded-md p-2 focus:outline-none focus:ring-2 focus:ring-neon';
 
-function selectDocType(docType) {
-  selectedDocType = docType;
-  form.innerHTML = '';
-  output.textContent = '';
+      wrapper.appendChild(labelEl);
+      wrapper.appendChild(inputEl);
+      return wrapper;
+    }
 
-  const fields = fieldsByDocType[docType];
-  if (fields) {
-    form.classList.remove('hidden');
-    submitBtn.classList.remove('hidden');
+    function selectDocType(docType) {
+      selectedDocType = docType;
+      form.innerHTML = '';
+      output.textContent = '';
+      outputContainer.classList.add('hidden');
 
-    fields.forEach(field => {
-      const inputField = createInputField(field);
-      form.appendChild(inputField);
-    });
+      const fields = fieldsByDocType[docType];
+      if (fields) {
+        form.classList.remove('hidden');
+        submitBtn.classList.remove('hidden');
 
-    submitBtn.onclick = async () => {
-      if (!form.checkValidity()) {
-        form.reportValidity();
-        return;
-      }
-
-      const formData = new FormData(form);
-      const rawInputs = Object.fromEntries(formData);
-
-      output.textContent = "⏳ Generating document...";
-
-      try {
-        const response = await fetch('/draft', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({
-            type: selectedDocType,
-            inputs: rawInputs
-          })
+        fields.forEach(field => {
+          const inputField = createInputField(field);
+          form.appendChild(inputField);
         });
 
-        const result = await response.json();
-        output.textContent = result.document || result.error || "⚠️ No response.";
+        submitBtn.onclick = async () => {
+          if (!form.checkValidity()) {
+            form.reportValidity();
+            return;
+          }
 
-        form.reset();
-        form.classList.add('hidden');
-        submitBtn.classList.add('hidden');
-      } catch (error) {
-        console.error('❌ Error:', error);
-        output.textContent = "❌ Error generating document.";
+          const formData = new FormData(form);
+          const rawInputs = Object.fromEntries(formData);
+
+          output.textContent = "⏳ Generating document...";
+          outputContainer.classList.remove('hidden');
+
+          try {
+            const response = await fetch('/draft', {
+              method: 'POST',
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify({ type: selectedDocType, inputs: rawInputs })
+            });
+
+            const result = await response.json();
+            output.textContent = result.document || result.error || "⚠️ No response.";
+
+            form.reset();
+            form.classList.add('hidden');
+            submitBtn.classList.add('hidden');
+          } catch (error) {
+            console.error('❌ Error:', error);
+            output.textContent = "❌ Error generating document.";
+          }
+        };
       }
-    };
-  }
-}
+    }
 
-document.querySelectorAll(".doc-type-btn").forEach(btn => {
-  btn.classList.add("bg-beige/10", "hover:bg-accentgreen/60", "transition", "border", "border-beige", "rounded-xl", "p-6", "text-center", "shadow", "text-beige", "focus:outline-none", "focus:ring-2", "focus:ring-beige");
-});
-</script>
+    downloadBtn.addEventListener("click", () => {
+      html2pdf().from(output).set({
+        margin: 0.5,
+        filename: `${selectedDocType || 'document'}.pdf`,
+        image: { type: 'jpeg', quality: 0.98 },
+        html2canvas: { scale: 2 },
+        jsPDF: { unit: 'in', format: 'letter', orientation: 'portrait' }
+      }).save();
+    });
+
+    document.querySelectorAll(".doc-type-btn").forEach(btn => {
+      btn.classList.add("pixel-border", "hover:scale-105", "transition", "rounded-xl", "p-6", "text-center", "text-beige", "glow-hover");
+    });
+  </script>
 </body>
 </html>

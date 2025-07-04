@@ -11,40 +11,59 @@
     tailwind.config = {
       theme: {
         extend: {
+          fontFamily: {
+            pixel: ['"Press Start 2P"', 'monospace'],
+          },
           colors: {
             darkgreen: '#192819',
             beige: '#F5F1E3',
             accentgreen: '#2F5D50',
+            neon: '#00FFB2',
+            pixelgray: '#1F1F1F',
           },
         },
       },
     };
   </script>
 
+  <!-- Pixel Font -->
+  <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet" />
+
   <!-- FontAwesome -->
-  <link
-    rel="stylesheet"
-    href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css"
-    crossorigin="anonymous"
-    referrerpolicy="no-referrer"
-  />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css" crossorigin="anonymous" />
 
   <style>
     body {
       background-color: #192819;
       color: #f5f1e3;
-      font-family: 'Inter', sans-serif;
+      font-family: 'Press Start 2P', monospace;
+      font-size: 10px;
       min-height: 100vh;
     }
 
-    /* Simple chat styling */
+    .pixel-border {
+      border: 3px solid #00FFB2;
+      box-shadow: 4px 4px 0 #000;
+    }
+
+    .neon-text {
+      color: #00FFB2;
+      text-shadow: 0 0 6px #00FFB2;
+    }
+
+    .glow-hover:hover {
+      text-shadow: 0 0 10px #00FFB2, 0 0 20px #00FFB2;
+    }
+
     #chat-container {
       background: #2f5d50;
       border-radius: 1rem;
       padding: 1rem;
       max-height: 400px;
       overflow-y: auto;
-      box-shadow: 0 8px 15px rgb(0 0 0 / 0.4);
+      box-shadow: 0 8px 15px rgba(0, 0, 0, 0.4);
+      font-family: 'Press Start 2P', monospace;
+      font-size: 10px;
     }
 
     .message {
@@ -52,14 +71,17 @@
       max-width: 70%;
       padding: 0.75rem 1rem;
       border-radius: 1rem;
-      line-height: 1.4;
+      line-height: 1.6;
+      word-break: break-word;
     }
+
     .user-message {
       background-color: #f5f1e3;
       color: #192819;
       margin-left: auto;
       border-bottom-right-radius: 0;
     }
+
     .bot-message {
       background-color: #4a7a68;
       color: #f5f1e3;
@@ -67,86 +89,80 @@
       border-bottom-left-radius: 0;
     }
 
-    /* Input area */
-    #input-area {
-      margin-top: 1rem;
-      display: flex;
-      gap: 0.5rem;
-    }
     #chat-input {
       flex-grow: 1;
       border-radius: 9999px;
       border: none;
       padding: 0.75rem 1rem;
-      font-size: 1rem;
+      font-size: 10px;
       outline: none;
-    }
-    #send-btn {
+      font-family: 'Press Start 2P', monospace;
       background-color: #f5f1e3;
       color: #192819;
-      font-weight: 600;
+    }
+
+    #send-btn {
+      background-color: #00FFB2;
+      color: #192819;
+      font-weight: bold;
       padding: 0 1.25rem;
       border-radius: 9999px;
       cursor: pointer;
       transition: background-color 0.3s ease;
       border: none;
+      font-family: 'Press Start 2P', monospace;
     }
+
     #send-btn:hover {
-      background-color: #d6cebd;
+      background-color: #00e6a0;
+    }
+
+    input::placeholder {
+      color: #888;
     }
   </style>
 </head>
-<body class="flex flex-col min-h-screen">
 
- 
+<body class="flex flex-col min-h-screen bg-darkgreen text-beige font-pixel">
 
-  <!-- Main Content -->
-  <main class="flex-grow container mx-auto px-6 py-12 max-w-4xl flex flex-col">
-    <section
-      class="bg-gradient-to-br from-green-700 to-green-900 rounded-3xl p-8 shadow-2xl flex flex-col"
-    >
+  <main class="flex-grow container mx-auto px-6 py-12 max-w-4xl">
+    <section class="bg-gradient-to-br from-accentgreen to-darkgreen rounded-3xl p-8 shadow-2xl pixel-border flex flex-col">
       <div class="flex items-center space-x-4 mb-6">
-        <div
-          class="w-16 h-16 bg-beige text-darkgreen rounded-full flex items-center justify-center text-3xl"
-        >
+        <div class="w-16 h-16 bg-beige text-darkgreen rounded-full flex items-center justify-center text-2xl neon-text">
           <i class="fas fa-comments"></i>
         </div>
-        <h1 class="text-4xl font-bold">General Legal Chatbot</h1>
+        <h1 class="text-sm sm:text-base font-bold neon-text uppercase glow-hover">General Legal Chatbot</h1>
       </div>
 
-      <p class="mb-6 text-beige/90 leading-relaxed text-lg">
-        Ask general legal questions tailored for individuals, startups, and small businesses. Get instant, AI-powered responses to help guide your decisions.
+      <p class="mb-6 text-beige/90 leading-relaxed text-xs">
+        Ask legal questions tailored for individuals, startups, or small businesses. Our AI gives instant legal insights.
       </p>
 
-      <!-- Chat container -->
-      <div id="chat-container" class="flex-grow overflow-auto mb-4">
-        <!-- Chat messages will appear here -->
-      </div>
+      <!-- Chat box -->
+      <div id="chat-container" class="flex-grow overflow-auto mb-4 pixel-border"></div>
 
       <!-- Input area -->
-      <form id="chat-form" class="flex gap-3" onsubmit="return false;">
-  <input
-      id="chat-input"
-      type="text"
-      placeholder="Type your message..."
-      class="flex-grow px-4 py-2 rounded-md text-darkgreen focus:outline-none"
-      autocomplete="off"
-/>
-
-  <button
-    type="submit"
-    class="bg-accentgreen text-beige px-4 rounded-md font-medium hover:bg-opacity-80 transition-all"
-  >
-    Send
-  </button>
-</form>
-
+      <form id="chat-form" class="flex gap-3 mt-4" onsubmit="return false;">
+        <input
+          id="chat-input"
+          type="text"
+          placeholder="Type your message..."
+          class="text-darkgreen"
+          autocomplete="off"
+        />
+        <button
+          type="submit"
+          id="send-btn"
+          class="glow-hover"
+        >
+          Send
+        </button>
+      </form>
     </section>
   </main>
 
-  <!-- Footer -->
-  <footer class="bg-darkgreen text-beige border-t border-beige px-6 py-8 mt-12 text-center text-sm">
-    © 2025 PLA Inc. All rights reserved.
+  <footer class="bg-darkgreen text-beige border-t border-beige px-6 py-8 mt-12 text-center text-xs">
+    © 2025 Powered Legal Assistant. All rights reserved.
   </footer>
 
   <script>
@@ -162,9 +178,11 @@
       chatInput.value = '';
       chatInput.focus();
 
+      appendMessage("⌛ Thinking...", 'bot-message');
+
       const response = await fetch("/chat", {
         method: "POST",
-        headers: {"Content-Type": "application/json"},
+        headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
           question: userMessage,
           model: "mistralai/Mixtral-8x7B-Instruct-v0.1"
@@ -172,7 +190,10 @@
       });
 
       const data = await response.json();
-      appendMessage(data.answer, 'bot-message');
+      const allBotMsgs = chatContainer.querySelectorAll(".bot-message");
+      allBotMsgs[allBotMsgs.length - 1].remove(); // Remove "Thinking..." message
+
+      appendMessage(data.answer || "❌ Sorry, no response received.", 'bot-message');
     });
 
     function appendMessage(text, className) {
@@ -182,8 +203,6 @@
       chatContainer.appendChild(msgDiv);
       chatContainer.scrollTop = chatContainer.scrollHeight;
     }
-</script>
-
-
+  </script>
 </body>
 </html>

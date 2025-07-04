@@ -3,7 +3,8 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Blog</title>
+  <title>Blog | PLA</title>
+
   <script src="https://cdn.tailwindcss.com"></script>
   <script>
     tailwind.config = {
@@ -13,132 +14,145 @@
             darkgreen: '#192819',
             beige: '#F5F1E3',
             accentgreen: '#2F5D50',
+            pixelgray: '#1F1F1F',
+            neon: '#00FFB2',
           },
-        },
-      },
+          fontFamily: {
+            mono: ['Courier New', 'monospace'],
+          }
+        }
+      }
     };
   </script>
+
+  <style>
+    .pixel-border {
+      border: 3px solid #00FFB2;
+      box-shadow: 4px 4px 0 #000;
+    }
+
+    .glow-hover:hover {
+      text-shadow: 0 0 6px #00FFB2, 0 0 10px #00FFB2;
+    }
+
+    .neon-title {
+      color: #00FFB2;
+      text-shadow: 0 0 8px #00FFB2;
+    }
+  </style>
 </head>
-<body class="bg-darkgreen text-beige">
-<section class="py-24 sm:py-32 px-6">
-  <div class="max-w-7xl mx-auto">
-    <div class="max-w-2xl lg:mx-0 mb-12">
-      <h2 class="text-4xl sm:text-5xl font-bold text-beige">From the blog</h2>
-      <p class="mt-4 text-lg text-white">Learn about your basic rights and stay updated!</p>
-    </div>
 
-    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-10">
+<body class="bg-darkgreen text-beige font-mono tracking-wide">
 
+  <!-- Blog Header -->
+  <section class="py-20 px-6 text-center border-b-4 border-neon">
+    <h1 class="text-5xl font-extrabold neon-title">📚 From the Blog</h1>
+    <p class="mt-4 text-lg text-white max-w-xl mx-auto">Learn your rights. Empower your voice. Stay legally aware with expert-curated resources.</p>
+  </section>
+
+  <!-- Blog Grid -->
+  <section class="py-20 px-6">
+    <div class="max-w-7xl mx-auto grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-10">
+
+      <!-- Blog Card Template -->
       <!-- Blog 1 -->
-      <div class="bg-beige text-darkgreen rounded-xl shadow-lg hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-2">
-        <div class="p-6">
-          <div class="text-sm text-gray-600 mb-2">May 13, 2022 · <span class="bg-gray-100 text-gray-700 px-2 py-1 rounded-full text-xs">Law</span></div>
-          <h3 class="text-lg font-semibold leading-tight transition-colors duration-200 hover:text-accentgreen">
+      <div class="bg-beige text-darkgreen rounded-xl pixel-border hover:scale-105 hover:shadow-2xl transition-all duration-300">
+        <div class="p-6 space-y-4">
+          <div class="text-xs text-gray-600">May 13, 2022 · <span class="bg-gray-100 px-2 py-1 rounded-full">Law</span></div>
+          <h3 class="text-lg font-bold hover:text-accentgreen transition">
             <a href="https://www.youtube.com/watch?v=CUmbYMlg1dY" target="_blank">Things You Need To Know When Dealing With Police</a>
           </h3>
-          <p class="text-sm mt-3 text-gray-700">Knowing what you should do when dealing with the police is really useful...</p>
-          <div class="mt-4 flex items-center gap-4">
-            <img src="{{ url_for('static', filename='Images/nitish.jpg') }}" alt="Nitish Rajput" class="w-10 h-10 rounded-full shadow-sm">
+          <p class="text-sm text-gray-800">Knowing what you should do when dealing with the police is really useful...</p>
+          <div class="flex items-center gap-4 mt-4">
+            <img src="{{ url_for('static', filename='Images/nitish.jpg') }}" class="w-10 h-10 rounded-full" />
             <div>
-              <p class="font-semibold text-gray-900"><a href="https://www.youtube.com/@NitishRajput" target="_blank" class="hover:underline hover:text-accentgreen">Nitish Rajput</a></p>
-              <p class="text-sm text-gray-600">Educator | YouTuber</p>
+              <p class="font-bold text-sm"><a href="https://www.youtube.com/@NitishRajput" target="_blank" class="hover:underline hover:text-accentgreen">Nitish Rajput</a></p>
+              <p class="text-xs text-gray-600">Educator | YouTuber</p>
             </div>
           </div>
         </div>
       </div>
 
       <!-- Blog 2 -->
-      <div class="bg-beige text-darkgreen rounded-xl shadow-lg hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-2">
-        <div class="p-6">
-          <div class="text-sm text-gray-600 mb-2">Dec 31, 2020 · <span class="bg-gray-100 text-gray-700 px-2 py-1 rounded-full text-xs">Law</span></div>
-          <h3 class="text-lg font-semibold leading-tight transition-colors duration-200 hover:text-accentgreen">
+      <div class="bg-beige text-darkgreen rounded-xl pixel-border hover:scale-105 hover:shadow-2xl transition-all duration-300">
+        <div class="p-6 space-y-4">
+          <div class="text-xs text-gray-600">Dec 31, 2020 · <span class="bg-gray-100 px-2 py-1 rounded-full">Law</span></div>
+          <h3 class="text-lg font-bold hover:text-accentgreen transition">
             <a href="https://www.youtube.com/watch?v=JmhUGEEpq_E" target="_blank">10 Important Laws Everyone Should Know</a>
           </h3>
-          <p class="text-sm mt-3 text-gray-700">This video explains the 10 most common laws every Indian should know...</p>
-          <div class="mt-4 flex items-center gap-4">
-            <img src="{{ url_for('static', filename='Images/PRIYAA.jpg') }}" alt="Priya Jain" class="w-10 h-10 rounded-full shadow-sm">
+          <p class="text-sm text-gray-800">This video explains the 10 most common laws every Indian should know...</p>
+          <div class="flex items-center gap-4 mt-4">
+            <img src="{{ url_for('static', filename='Images/PRIYAA.jpg') }}" class="w-10 h-10 rounded-full" />
             <div>
-              <p class="font-semibold text-gray-900"><a href="https://www.youtube.com/@_FinologyLegal" target="_blank" class="hover:underline hover:text-accentgreen">Priya Jain</a></p>
-              <p class="text-sm text-gray-600">Digital creator | Social Engineer</p>
+              <p class="font-bold text-sm"><a href="https://www.youtube.com/@_FinologyLegal" target="_blank" class="hover:underline hover:text-accentgreen">Priya Jain</a></p>
+              <p class="text-xs text-gray-600">Digital creator | Social Engineer</p>
             </div>
           </div>
         </div>
       </div>
 
-      <!-- Blog 3 (repeat of Blog 1) -->
-      <div class="bg-beige text-darkgreen rounded-xl shadow-lg hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-2">
-        <div class="p-6">
-          <div class="text-sm text-gray-600 mb-2">May 13, 2022 · <span class="bg-gray-100 text-gray-700 px-2 py-1 rounded-full text-xs">Law</span></div>
-          <h3 class="text-lg font-semibold leading-tight transition-colors duration-200 hover:text-accentgreen">
-            <a href="https://www.youtube.com/watch?v=CUmbYMlg1dY" target="_blank">Things You Need To Know When Dealing With Police</a>
+      <!-- Blog 3 -->
+      <div class="bg-beige text-darkgreen rounded-xl pixel-border hover:scale-105 hover:shadow-2xl transition-all duration-300">
+        <div class="p-6 space-y-4">
+          <div class="text-xs text-gray-600">Apr 8, 2025 · <span class="bg-gray-100 px-2 py-1 rounded-full">Law</span></div>
+          <h3 class="text-lg font-bold hover:text-accentgreen transition">
+            <a href="https://www.youtube.com/watch?v=4LQ2UrPUu5I" target="_blank">Difference Between Act, Bill, Ordinance</a>
           </h3>
-          <p class="text-sm mt-3 text-gray-700">Knowing what you should do when dealing with the police is really useful...</p>
-          <div class="mt-4 flex items-center gap-4">
-            <img src="{{ url_for('static', filename='Images/nitish.jpg') }}" alt="Nitish Rajput" class="w-10 h-10 rounded-full shadow-sm">
+          <p class="text-sm text-gray-800">Simplifying confusing legal topics with examples...</p>
+          <div class="flex items-center gap-4 mt-4">
+            <img src="{{ url_for('static', filename='Images/PRIYAA.jpg') }}" class="w-10 h-10 rounded-full" />
             <div>
-              <p class="font-semibold text-gray-900"><a href="https://www.youtube.com/@NitishRajput" target="_blank" class="hover:underline hover:text-accentgreen">Nitish Rajput</a></p>
-              <p class="text-sm text-gray-600">Educator | YouTuber</p>
+              <p class="font-bold text-sm"><a href="https://www.youtube.com/@_FinologyLegal" target="_blank" class="hover:underline hover:text-accentgreen">Priya Jain</a></p>
+              <p class="text-xs text-gray-600">Digital creator | Social Engineer</p>
             </div>
           </div>
         </div>
       </div>
 
       <!-- Blog 4 -->
-      <div class="bg-beige text-darkgreen rounded-xl shadow-lg hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-2">
-        <div class="p-6">
-          <div class="text-sm text-gray-600 mb-2">Apr 8, 2025 · <span class="bg-gray-100 text-gray-700 px-2 py-1 rounded-full text-xs">Law</span></div>
-          <h3 class="text-lg font-semibold leading-tight transition-colors duration-200 hover:text-accentgreen">
-            <a href="https://www.youtube.com/watch?v=4LQ2UrPUu5I" target="_blank">Difference Between Act, Bill, Ordinance</a>
+      <div class="bg-beige text-darkgreen rounded-xl pixel-border hover:scale-105 hover:shadow-2xl transition-all duration-300">
+        <div class="p-6 space-y-4">
+          <div class="text-xs text-gray-600">May 16, 2022 · <span class="bg-gray-100 px-2 py-1 rounded-full">Law</span></div>
+          <h3 class="text-lg font-bold hover:text-accentgreen transition">
+            <a href="https://www.youtube.com/watch?v=Zhxp1BGgBn8" target="_blank">10 Property Documents Before Buying</a>
           </h3>
-          <p class="text-sm mt-3 text-gray-700">Simplifying confusing legal topics with examples...</p>
-          <div class="mt-4 flex items-center gap-4">
-            <img src="{{ url_for('static', filename='Images/PRIYAA.jpg') }}" alt="Priya Jain" class="w-10 h-10 rounded-full shadow-sm">
+          <p class="text-sm text-gray-800">Adv. Naman Mohnot explains property frauds and key documents...</p>
+          <div class="flex items-center gap-4 mt-4">
+            <img src="{{ url_for('static', filename='Images/LLA.jpg') }}" class="w-10 h-10 rounded-full" />
             <div>
-              <p class="font-semibold text-gray-900"><a href="https://www.youtube.com/@_FinologyLegal" target="_blank" class="hover:underline hover:text-accentgreen">Priya Jain</a></p>
-              <p class="text-sm text-gray-600">Digital creator | Social Engineer</p>
+              <p class="font-bold text-sm"><a href="https://www.youtube.com/@LabourLawAdvisor" target="_blank" class="hover:underline hover:text-accentgreen">Labour Law Advisor</a></p>
+              <p class="text-xs text-gray-600">Finance | Tax | Employment Laws</p>
             </div>
           </div>
         </div>
       </div>
 
       <!-- Blog 5 -->
-      <div class="bg-beige text-darkgreen rounded-xl shadow-lg hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-2">
-        <div class="p-6">
-          <div class="text-sm text-gray-600 mb-2">May 16, 2022 · <span class="bg-gray-100 text-gray-700 px-2 py-1 rounded-full text-xs">Law</span></div>
-          <h3 class="text-lg font-semibold leading-tight transition-colors duration-200 hover:text-accentgreen">
-            <a href="https://www.youtube.com/watch?v=Zhxp1BGgBn8" target="_blank">10 Property Documents Before Buying</a>
-          </h3>
-          <p class="text-sm mt-3 text-gray-700">Adv. Naman Mohnot explains property frauds and key documents...</p>
-          <div class="mt-4 flex items-center gap-4">
-            <img src="{{ url_for('static', filename='Images/LLA.jpg') }}" alt="LLA" class="w-10 h-10 rounded-full shadow-sm">
-            <div>
-              <p class="font-semibold text-gray-900"><a href="https://www.youtube.com/@LabourLawAdvisor" target="_blank" class="hover:underline hover:text-accentgreen">Labour Law Advisor</a></p>
-              <p class="text-sm text-gray-600">Personal Finance | Taxation | Employment Laws</p>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <!-- Blog 6 -->
-      <div class="bg-beige text-darkgreen rounded-xl shadow-lg hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-2">
-        <div class="p-6">
-          <div class="text-sm text-gray-600 mb-2">Apr 15, 2025 · <span class="bg-gray-100 text-gray-700 px-2 py-1 rounded-full text-xs">Law</span></div>
-          <h3 class="text-lg font-semibold leading-tight transition-colors duration-200 hover:text-accentgreen">
+      <div class="bg-beige text-darkgreen rounded-xl pixel-border hover:scale-105 hover:shadow-2xl transition-all duration-300">
+        <div class="p-6 space-y-4">
+          <div class="text-xs text-gray-600">Apr 15, 2025 · <span class="bg-gray-100 px-2 py-1 rounded-full">Law</span></div>
+          <h3 class="text-lg font-bold hover:text-accentgreen transition">
             <a href="https://www.youtube.com/watch?v=64TKyhz2wh4" target="_blank">Supreme Court vs President of India</a>
           </h3>
-          <p class="text-sm mt-3 text-gray-700">This video explains legal conflicts and powers under the Indian Constitution.</p>
-          <div class="mt-4 flex items-center gap-4">
-            <img src="{{ url_for('static', filename='Images/NEWJ.jpg') }}" alt="NEWJ" class="w-10 h-10 rounded-full shadow-sm">
+          <p class="text-sm text-gray-800">Explains legal conflicts & powers under the Indian Constitution.</p>
+          <div class="flex items-center gap-4 mt-4">
+            <img src="{{ url_for('static', filename='Images/NEWJ.jpg') }}" class="w-10 h-10 rounded-full" />
             <div>
-              <p class="font-semibold text-gray-900"><a href="https://www.youtube.com/@NEWJchannel" target="_blank" class="hover:underline hover:text-accentgreen">NEWJ</a></p>
-              <p class="text-sm text-gray-600">Legal Updates | Indian Constitution</p>
+              <p class="font-bold text-sm"><a href="https://www.youtube.com/@NEWJchannel" target="_blank" class="hover:underline hover:text-accentgreen">NEWJ</a></p>
+              <p class="text-xs text-gray-600">Indian Constitution | Law Updates</p>
             </div>
           </div>
         </div>
       </div>
 
     </div>
-  </div>
-</section>
+  </section>
+
+  <!-- Footer -->
+  <footer class="bg-pixelgray text-white text-center py-10 border-t border-neon text-sm">
+    <p>© 2025 PLA. All Rights Reserved.</p>
+    <p>Curated with 💡 during Pixel Palette Hackathon.</p>
+  </footer>
+
 </body>
 </html>

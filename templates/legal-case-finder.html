@@ -11,15 +11,23 @@
     tailwind.config = {
       theme: {
         extend: {
+          fontFamily: {
+            pixel: ['"Press Start 2P"', 'monospace'],
+          },
           colors: {
             darkgreen: '#192819',
             beige: '#F5F1E3',
             accentgreen: '#2F5D50',
-          },
-        },
-      },
+            neon: '#00FFB2',
+            pixelgray: '#1F1F1F',
+          }
+        }
+      }
     };
   </script>
+
+  <!-- Google Fonts: Pixel Font -->
+  <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet" />
 
   <!-- FontAwesome -->
   <link
@@ -28,35 +36,52 @@
     crossorigin="anonymous"
   />
 
+  <!-- Custom Style -->
   <style>
     body {
       background-color: #192819;
-      color: #f5f1e3;
-      font-family: 'Inter', sans-serif;
-      min-height: 100vh;
+      color: #F5F1E3;
+      font-family: 'Press Start 2P', monospace;
+      font-size: 10px;
+      scroll-behavior: smooth;
+    }
+
+    .pixel-border {
+      border: 3px solid #00FFB2;
+      box-shadow: 4px 4px 0 #000;
+    }
+
+    .neon-text {
+      color: #00FFB2;
+      text-shadow: 0 0 6px #00FFB2;
+    }
+
+    .glow-hover:hover {
+      text-shadow: 0 0 10px #00FFB2, 0 0 20px #00FFB2;
+    }
+
+    input::placeholder {
+      color: rgba(245, 241, 227, 0.6);
     }
   </style>
 </head>
-<body class="flex flex-col min-h-screen">
+
+<body class="flex flex-col min-h-screen bg-darkgreen text-beige font-pixel">
 
   <!-- Main Content -->
-  <main class="flex-grow container mx-auto px-6 py-12 max-w-4xl">
-    <section
-      class="bg-gradient-to-br from-green-700 to-green-900 rounded-3xl p-10 shadow-2xl"
-    >
+  <main class="flex-grow container mx-auto px-6 py-12 max-w-5xl">
+    <section class="bg-pixelgray rounded-3xl p-10 shadow-xl pixel-border">
       <!-- Header -->
       <div class="flex items-center space-x-4 mb-6">
-        <div
-          class="w-16 h-16 bg-beige text-darkgreen rounded-full flex items-center justify-center text-3xl"
-        >
+        <div class="w-16 h-16 bg-beige text-darkgreen rounded-full flex items-center justify-center text-2xl neon-text">
           <i class="fas fa-gavel"></i>
         </div>
-        <h1 class="text-4xl font-bold">Legal Document & Case Finder</h1>
+        <h1 class="text-base sm:text-lg font-extrabold uppercase neon-text glow-hover">Legal Case Finder</h1>
       </div>
 
       <!-- Description -->
-      <p class="mb-8 text-beige/90 leading-relaxed text-lg">
-        Enter a topic like <strong>Article 21</strong> or <strong>Property Dispute</strong>, and get instant access to related judgments, citations, and documents.
+      <p class="mb-8 text-beige/90 leading-relaxed text-xs">
+        Enter a legal topic like <strong>Article 21</strong> or <strong>Property Dispute</strong>, and get instant access to related judgments, citations, and legal documents powered by AI.
       </p>
 
       <!-- Search Input -->
@@ -65,34 +90,32 @@
           id="keywordInput"
           type="text"
           placeholder="Type your legal topic..."
-          class="flex-1 px-4 py-3 rounded-md bg-accentgreen text-beige placeholder-beige/70 border border-beige/50 focus:outline-none focus:ring-2 focus:ring-accentgreen"
+          class="flex-1 px-4 py-3 rounded-md bg-accentgreen text-beige placeholder-beige/70 border border-beige/50 focus:outline-none focus:ring-2 focus:ring-neon font-pixel"
         />
         <button
           id="searchBtn"
-          class="bg-beige text-darkgreen px-6 py-3 rounded-md hover:bg-darkgreen hover:text-white transition"
+          class="bg-neon text-darkgreen font-bold px-6 py-3 rounded-md hover:bg-opacity-90 glow-hover transition-all font-pixel"
         >
           <i class="fas fa-search mr-2"></i> Search
         </button>
       </div>
 
       <!-- Status Text -->
-      <div id="statusText" class="mb-4 hidden text-lg text-beige">
-        🔍 Searching for: '<span id="queryText" class="font-semibold text-beige"></span>'...
+      <div id="statusText" class="mb-4 hidden text-xs text-neon">
+        🔍 Searching for: '<span id="queryText" class="font-semibold neon-text"></span>'...
       </div>
 
       <!-- Results -->
-      <div id="results" class="space-y-6">
-        <!-- Cards will be inserted here -->
-      </div>
+      <div id="results" class="space-y-6"></div>
     </section>
   </main>
 
   <!-- Footer -->
-  <footer class="bg-darkgreen text-beige border-t border-beige px-6 py-8 mt-12 text-center text-sm">
-    © 2025 PLA Inc. All rights reserved.
+  <footer class="bg-pixelgray text-beige border-t border-beige px-6 py-8 text-center text-xs">
+    © 2025 Powered Legal Assistant. All rights reserved.
   </footer>
 
-  <!-- JS-->
+  <!-- JavaScript -->
   <script>
     const searchBtn = document.getElementById('searchBtn');
     const keywordInput = document.getElementById('keywordInput');
@@ -104,7 +127,7 @@
 
     function showSpinner() {
       loadingSpinner = document.createElement('div');
-      loadingSpinner.className = "text-center text-lg text-beige animate-pulse";
+      loadingSpinner.className = "text-center text-xs text-neon animate-pulse";
       loadingSpinner.innerHTML = "🔄 Fetching case data...";
       results.innerHTML = "";
       results.appendChild(loadingSpinner);
@@ -120,7 +143,7 @@
     function createCopyButton(url) {
       const btn = document.createElement("button");
       btn.textContent = "📋 Copy URL";
-      btn.className = "text-xs bg-beige text-darkgreen px-2 py-1 rounded hover:bg-opacity-80";
+      btn.className = "text-[10px] bg-beige text-darkgreen px-2 py-1 rounded hover:bg-opacity-80 font-pixel";
       btn.onclick = () => {
         navigator.clipboard.writeText(url);
         btn.textContent = "✅ Copied!";
@@ -131,23 +154,21 @@
 
     function createCard(item, index) {
       const card = document.createElement("div");
-      card.className = "p-6 bg-darkgreen border border-beige/30 rounded-lg shadow-sm whitespace-pre-wrap text-beige/90 text-sm";
+      card.className = "p-6 bg-darkgreen border border-beige/30 rounded-lg shadow-md text-beige/90 text-xs pixel-border";
 
-      const badge = `<span class="bg-green-100 text-green-800 text-xs font-semibold px-2 py-1 rounded-full">${item.type}</span>`;
-      const excerpt = item.excerpt ? `<div class="mt-3 text-green-200 text-sm"><strong>📌 Excerpt:</strong><br>${item.excerpt}</div>` : "";
+      const excerpt = item.excerpt ? `<div class="mt-3 text-green-200"><strong>📌 Excerpt:</strong><br>${item.excerpt}</div>` : "";
 
       card.innerHTML = `
         <div class="flex justify-between items-start mb-2">
-          <h3 class="text-lg font-semibold text-beige">📄 CASE #${index + 1}: ${item.title}</h3>
-          ${badge}
+          <h3 class="text-sm font-bold neon-text">📄 CASE #${index + 1}: ${item.title}</h3>
+          <span class="text-[10px] bg-green-100 text-green-800 font-semibold px-2 py-1 rounded-full">${item.type}</span>
         </div>
-        <p class="text-green-200 text-sm mb-1">
-          🔗 <a href="${item.url}" target="_blank" class="underline hover:text-beige">${item.url}</a>
+        <p class="text-green-200 mb-1">
+          🔗 <a href="${item.url}" target="_blank" class="underline hover:text-beige">Open Judgment</a>
         </p>
-        <div class="mb-2"></div>
         <div class="flex items-center gap-3 mb-2">
           ${createCopyButton(item.url).outerHTML}
-          <a href="${item.url}" target="_blank" class="text-xs bg-accentgreen text-beige px-2 py-1 rounded hover:bg-opacity-80">🌐 Open Full Case</a>
+          <a href="${item.url}" target="_blank" class="text-[10px] bg-accentgreen text-beige px-2 py-1 rounded hover:bg-opacity-90 font-pixel">🌐 Open Full Case</a>
         </div>
         <div><strong>📝 Preview:</strong><br>${item.preview}</div>
         ${excerpt}
@@ -166,9 +187,7 @@
 
       fetch("/find-cases", {
         method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
+        headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ query }),
       })
         .then((res) => res.json())
@@ -177,7 +196,7 @@
           results.innerHTML = "";
 
           if (!Array.isArray(data) || data.length === 0) {
-            results.innerHTML = `<p class="text-yellow-400 text-sm">⚠️ No judgments found for "<strong>${query}</strong>". Try refining your query.</p>`;
+            results.innerHTML = `<p class="text-yellow-400 text-xs">⚠️ No results found for "<strong>${query}</strong>".</p>`;
             return;
           }
 
@@ -188,11 +207,10 @@
         })
         .catch((err) => {
           hideSpinner();
-          results.innerHTML = `<p class="text-red-400 text-sm">❌ Error fetching results. Please try again later.</p>`;
+          results.innerHTML = `<p class="text-red-400 text-xs">❌ Error fetching results.</p>`;
           console.error(err);
         });
     });
   </script>
-
 </body>
 </html>
