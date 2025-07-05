@@ -11,11 +11,11 @@
 | 📄 **PDF Summarizer** | Summarizes uploaded legal documents and highlights key clauses. | 🟡 Medium |
 | ❓ **PDF Q&A System** | Ask legal questions based on uploaded PDFs and get contextual answers. | 🔴 Hard |
 | ⚖️ **Adversarial Legal Argument Generator** | Uses LLM to generate both prosecution and defense perspectives. | 🔴 Hard |
-| 🧾 **Document Drafter** | Auto-generates NDAs, leases, contracts, and wills. | 🟡 Medium |
+| 🧾 **Document Drafter** | Auto-generates NDAs, leases, contracts, and wills. | 🔴 Hard |
 | 💬 **Legal Chatbot** | Provides general legal advice using Google Gemini LLM. | 🟡 Medium |
-| 🔍 **Case Finder** | Fetches case law and citations from Indian Kanoon. | 🟡 Medium |
+| 🔍 **Case Finder** | Fetches case law and citations from Indian Kanoon. | 🔴 Hard |
 | 📰 **Legal News Aggregator** | Shows curated legal news from global & Indian sources. | 🟢 Easy |
-| 💬 **Telegram Bot Integration** | Use chatbot and document tools via Telegram. | 🟢 Easy |
+| 💬 **Telegram Bot Integration** | Use chatbot and document tools via Telegram. | 🔴 Hard |
 | 🌗 **Dark/Light Mode** | Toggle UI themes manually | 🟢 Easy |
 | 🌗 **Dark/Light Mode** | Toggle UI themes manually or auto-switch based on time of day. | 🟡 Medium |
 | 🔈 **Text-to-Speech (TTS)** | Listen to summaries and answers using browser voice. | 🔴 Hard |
