@@ -1,158 +1,148 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Blog | PLA</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>LegalHawk Blog</title>
 
+  <!-- Tailwind CSS -->
   <script src="https://cdn.tailwindcss.com"></script>
   <script>
     tailwind.config = {
+      darkMode: 'class',
       theme: {
         extend: {
+          fontFamily: {
+            pixel: ['"Press Start 2P"', 'monospace'],
+          },
           colors: {
             darkgreen: '#192819',
             beige: '#F5F1E3',
             accentgreen: '#2F5D50',
-            pixelgray: '#1F1F1F',
             neon: '#00FFB2',
+            pixelgray: '#1F1F1F',
           },
-          fontFamily: {
-            mono: ['Courier New', 'monospace'],
-          }
-        }
-      }
+        },
+      },
     };
   </script>
 
+  <!-- Pixel Font -->
+  <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet" />
+
+  <!-- FontAwesome -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css" crossorigin="anonymous" />
+
+  <!-- Style -->
   <style>
+    body {
+      font-family: 'Press Start 2P', monospace;
+      font-size: 10px;
+      transition: background-color 0.3s, color 0.3s;
+    }
+
     .pixel-border {
       border: 3px solid #00FFB2;
       box-shadow: 4px 4px 0 #000;
     }
 
-    .glow-hover:hover {
-      text-shadow: 0 0 6px #00FFB2, 0 0 10px #00FFB2;
+    .neon-text {
+      color: #00FFB2;
+      text-shadow: 0 0 6px #00FFB2;
     }
 
-    .neon-title {
-      color: #00FFB2;
-      text-shadow: 0 0 8px #00FFB2;
+    .glow-hover:hover {
+      text-shadow: 0 0 10px #00FFB2, 0 0 20px #00FFB2;
     }
   </style>
 </head>
 
-<body class="bg-darkgreen text-beige font-mono tracking-wide">
+<body class="bg-darkgreen text-beige dark:bg-white dark:text-black flex flex-col min-h-screen">
 
-  <!-- Blog Header -->
-  <section class="py-20 px-6 text-center border-b-4 border-neon">
-    <h1 class="text-5xl font-extrabold neon-title">📚 From the Blog</h1>
-    <p class="mt-4 text-lg text-white max-w-xl mx-auto">Learn your rights. Empower your voice. Stay legally aware with expert-curated resources.</p>
-  </section>
+  <!-- 🌗 Theme Toggle -->
+  <button onclick="toggleTheme()" class="fixed top-4 right-4 bg-neon text-darkgreen font-bold px-3 py-1 rounded pixel-border text-xs z-50">
+    🌓 Toggle Theme
+  </button>
 
-  <!-- Blog Grid -->
-  <section class="py-20 px-6">
-    <div class="max-w-7xl mx-auto grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-10">
-
-      <!-- Blog Card Template -->
-      <!-- Blog 1 -->
-      <div class="bg-beige text-darkgreen rounded-xl pixel-border hover:scale-105 hover:shadow-2xl transition-all duration-300">
-        <div class="p-6 space-y-4">
-          <div class="text-xs text-gray-600">May 13, 2022 · <span class="bg-gray-100 px-2 py-1 rounded-full">Law</span></div>
-          <h3 class="text-lg font-bold hover:text-accentgreen transition">
-            <a href="https://www.youtube.com/watch?v=CUmbYMlg1dY" target="_blank">Things You Need To Know When Dealing With Police</a>
-          </h3>
-          <p class="text-sm text-gray-800">Knowing what you should do when dealing with the police is really useful...</p>
-          <div class="flex items-center gap-4 mt-4">
-            <img src="{{ url_for('static', filename='Images/nitish.jpg') }}" class="w-10 h-10 rounded-full" />
-            <div>
-              <p class="font-bold text-sm"><a href="https://www.youtube.com/@NitishRajput" target="_blank" class="hover:underline hover:text-accentgreen">Nitish Rajput</a></p>
-              <p class="text-xs text-gray-600">Educator | YouTuber</p>
-            </div>
-          </div>
-        </div>
+  <!-- Main -->
+  <main class="container mx-auto px-6 py-12 max-w-5xl flex-grow">
+    <!-- Header -->
+    <div class="flex items-center space-x-4 mb-6">
+      <div class="w-16 h-16 bg-beige text-darkgreen rounded-full flex items-center justify-center text-2xl neon-text">
+        <i class="fas fa-blog"></i>
       </div>
-
-      <!-- Blog 2 -->
-      <div class="bg-beige text-darkgreen rounded-xl pixel-border hover:scale-105 hover:shadow-2xl transition-all duration-300">
-        <div class="p-6 space-y-4">
-          <div class="text-xs text-gray-600">Dec 31, 2020 · <span class="bg-gray-100 px-2 py-1 rounded-full">Law</span></div>
-          <h3 class="text-lg font-bold hover:text-accentgreen transition">
-            <a href="https://www.youtube.com/watch?v=JmhUGEEpq_E" target="_blank">10 Important Laws Everyone Should Know</a>
-          </h3>
-          <p class="text-sm text-gray-800">This video explains the 10 most common laws every Indian should know...</p>
-          <div class="flex items-center gap-4 mt-4">
-            <img src="{{ url_for('static', filename='Images/PRIYAA.jpg') }}" class="w-10 h-10 rounded-full" />
-            <div>
-              <p class="font-bold text-sm"><a href="https://www.youtube.com/@_FinologyLegal" target="_blank" class="hover:underline hover:text-accentgreen">Priya Jain</a></p>
-              <p class="text-xs text-gray-600">Digital creator | Social Engineer</p>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <!-- Blog 3 -->
-      <div class="bg-beige text-darkgreen rounded-xl pixel-border hover:scale-105 hover:shadow-2xl transition-all duration-300">
-        <div class="p-6 space-y-4">
-          <div class="text-xs text-gray-600">Apr 8, 2025 · <span class="bg-gray-100 px-2 py-1 rounded-full">Law</span></div>
-          <h3 class="text-lg font-bold hover:text-accentgreen transition">
-            <a href="https://www.youtube.com/watch?v=4LQ2UrPUu5I" target="_blank">Difference Between Act, Bill, Ordinance</a>
-          </h3>
-          <p class="text-sm text-gray-800">Simplifying confusing legal topics with examples...</p>
-          <div class="flex items-center gap-4 mt-4">
-            <img src="{{ url_for('static', filename='Images/PRIYAA.jpg') }}" class="w-10 h-10 rounded-full" />
-            <div>
-              <p class="font-bold text-sm"><a href="https://www.youtube.com/@_FinologyLegal" target="_blank" class="hover:underline hover:text-accentgreen">Priya Jain</a></p>
-              <p class="text-xs text-gray-600">Digital creator | Social Engineer</p>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <!-- Blog 4 -->
-      <div class="bg-beige text-darkgreen rounded-xl pixel-border hover:scale-105 hover:shadow-2xl transition-all duration-300">
-        <div class="p-6 space-y-4">
-          <div class="text-xs text-gray-600">May 16, 2022 · <span class="bg-gray-100 px-2 py-1 rounded-full">Law</span></div>
-          <h3 class="text-lg font-bold hover:text-accentgreen transition">
-            <a href="https://www.youtube.com/watch?v=Zhxp1BGgBn8" target="_blank">10 Property Documents Before Buying</a>
-          </h3>
-          <p class="text-sm text-gray-800">Adv. Naman Mohnot explains property frauds and key documents...</p>
-          <div class="flex items-center gap-4 mt-4">
-            <img src="{{ url_for('static', filename='Images/LLA.jpg') }}" class="w-10 h-10 rounded-full" />
-            <div>
-              <p class="font-bold text-sm"><a href="https://www.youtube.com/@LabourLawAdvisor" target="_blank" class="hover:underline hover:text-accentgreen">Labour Law Advisor</a></p>
-              <p class="text-xs text-gray-600">Finance | Tax | Employment Laws</p>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <!-- Blog 5 -->
-      <div class="bg-beige text-darkgreen rounded-xl pixel-border hover:scale-105 hover:shadow-2xl transition-all duration-300">
-        <div class="p-6 space-y-4">
-          <div class="text-xs text-gray-600">Apr 15, 2025 · <span class="bg-gray-100 px-2 py-1 rounded-full">Law</span></div>
-          <h3 class="text-lg font-bold hover:text-accentgreen transition">
-            <a href="https://www.youtube.com/watch?v=64TKyhz2wh4" target="_blank">Supreme Court vs President of India</a>
-          </h3>
-          <p class="text-sm text-gray-800">Explains legal conflicts & powers under the Indian Constitution.</p>
-          <div class="flex items-center gap-4 mt-4">
-            <img src="{{ url_for('static', filename='Images/NEWJ.jpg') }}" class="w-10 h-10 rounded-full" />
-            <div>
-              <p class="font-bold text-sm"><a href="https://www.youtube.com/@NEWJchannel" target="_blank" class="hover:underline hover:text-accentgreen">NEWJ</a></p>
-              <p class="text-xs text-gray-600">Indian Constitution | Law Updates</p>
-            </div>
-          </div>
-        </div>
-      </div>
-
+      <h1 class="text-lg sm:text-xl font-bold neon-text uppercase glow-hover">LegalHawk Blog</h1>
     </div>
-  </section>
+
+    <!-- Fun Fact -->
+    <div id="funFact" class="text-xs mb-6 text-neon font-bold"></div>
+
+    <!-- Blog Entries -->
+    <div class="grid sm:grid-cols-2 gap-8">
+      <a href="https://www.youtube.com/watch?v=dQw4w9WgXcQ" target="_blank" class="block">
+        <div class="bg-beige text-darkgreen p-6 rounded-xl pixel-border hover:shadow-xl transition">
+          <h2 class="text-sm font-bold mb-2">🧠 Understanding PILs in India</h2>
+          <p class="text-xs">Public Interest Litigations empower citizens to challenge injustice. Here's how they work.</p>
+        </div>
+      </a>
+      <a href="https://www.youtube.com/watch?v=dQw4w9WgXcQ" target="_blank" class="block">
+        <div class="bg-beige text-darkgreen p-6 rounded-xl pixel-border hover:shadow-xl transition">
+          <h2 class="text-sm font-bold mb-2">📜 Article 21 & Right to Life</h2>
+          <p class="text-xs">A quick look at one of India's most powerful fundamental rights and legal battles surrounding it.</p>
+        </div>
+      </a>
+      <a href="https://www.youtube.com/watch?v=dQw4w9WgXcQ" target="_blank" class="block">
+        <div class="bg-beige text-darkgreen p-6 rounded-xl pixel-border hover:shadow-xl transition">
+          <h2 class="text-sm font-bold mb-2">⚖️ Top 5 Landmark Judgments</h2>
+          <p class="text-xs">These cases changed the course of Indian constitutional law forever. Learn their stories.</p>
+        </div>
+      </a>
+      <a href="https://www.youtube.com/watch?v=dQw4w9WgXcQ" target="_blank" class="block">
+        <div class="bg-beige text-darkgreen p-6 rounded-xl pixel-border hover:shadow-xl transition">
+          <h2 class="text-sm font-bold mb-2">🤖 How AI is Disrupting Legal Research</h2>
+          <p class="text-xs">Explore how AI tools like LegalHawk are transforming how lawyers work.</p>
+        </div>
+      </a>
+    </div>
+  </main>
 
   <!-- Footer -->
-  <footer class="bg-pixelgray text-white text-center py-10 border-t border-neon text-sm">
-    <p>© 2025 PLA. All Rights Reserved.</p>
-    <p>Curated with 💡 during Pixel Palette Hackathon.</p>
+  <footer class="bg-darkgreen text-beige dark:bg-white dark:text-black border-t border-beige px-6 py-8 text-center text-xs">
+    © 2025 LegalHawk. All rights reserved.
   </footer>
 
+  <!-- Scripts -->
+  <script>
+    // 🌙 Theme Toggle Logic
+    function toggleTheme() {
+      const html = document.documentElement;
+      const isDark = html.classList.contains('dark');
+      html.classList.toggle('dark', !isDark);
+      localStorage.setItem('theme', isDark ? 'light' : 'dark');
+    }
+
+    // Apply theme on load based on time or saved preference
+    window.onload = () => {
+      const html = document.documentElement;
+      const savedTheme = localStorage.getItem('theme');
+      const hour = new Date().getHours();
+
+      // Auto dark mode from 6PM to 6AM if no saved theme
+      if (savedTheme === 'dark' || (!savedTheme && (hour >= 18 || hour < 6))) {
+        html.classList.add('dark');
+      } else {
+        html.classList.remove('dark');
+      }
+
+      // Fun Fact of the day
+      const facts = [
+        "⚖️ 'Justice delayed is justice denied.' — Gladstone",
+        "📚 Did you know? India has one of the largest written constitutions in the world.",
+        "📜 The Indian Constitution came into effect on 26 January 1950.",
+        "👩‍⚖️ Legal awareness is the first step toward empowerment.",
+      ];
+      document.getElementById("funFact").textContent = facts[Math.floor(Math.random() * facts.length)];
+    };
+  </script>
 </body>
 </html>

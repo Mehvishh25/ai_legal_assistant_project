@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" id="html">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -9,6 +9,7 @@
   <script src="https://cdn.tailwindcss.com"></script>
   <script>
     tailwind.config = {
+      darkMode: 'class',
       theme: {
         extend: {
           fontFamily: {
@@ -21,66 +22,43 @@
             pixelgray: '#1F1F1F',
             neon: '#00FFB2',
             blockgray: '#2A2A2A',
+            light: '#f5f5f5',
+            dark: '#1a1a1a'
           }
         }
       }
     };
   </script>
 
-  <!-- Pixel Font -->
   <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet" />
-
-  <!-- FontAwesome -->
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css" crossorigin="anonymous" />
-
-  <!-- html2pdf.js -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
 
   <style>
     html { scroll-behavior: smooth; }
-
-    body {
-      font-family: 'Press Start 2P', monospace;
-      font-size: 10px;
-    }
-
-    .pixel-border {
-      border: 3px solid #00FFB2;
-      box-shadow: 4px 4px 0 #000;
-    }
-
-    .neon-text {
-      color: #00FFB2;
-      text-shadow: 0 0 6px #00FFB2;
-    }
-
-    .glow-hover:hover {
-      text-shadow: 0 0 10px #00FFB2, 0 0 20px #00FFB2;
-    }
-
-    input, button, label {
-      font-family: 'Press Start 2P', monospace !important;
-    }
+    body { font-family: 'Press Start 2P', monospace; font-size: 10px; transition: background-color 0.3s, color 0.3s; }
+    .pixel-border { border: 3px solid #00FFB2; box-shadow: 4px 4px 0 #000; }
+    .neon-text { color: #00FFB2; text-shadow: 0 0 6px #00FFB2; }
+    .glow-hover:hover { text-shadow: 0 0 10px #00FFB2, 0 0 20px #00FFB2; }
+    input, button, label { font-family: 'Press Start 2P', monospace !important; }
   </style>
 </head>
 
-<body class="bg-darkgreen text-beige font-pixel tracking-tight">
-  <main class="flex-grow container mx-auto px-6 py-12 max-w-5xl">
-    <section class="bg-blockgray border-4 border-neon rounded-3xl p-10 shadow-2xl">
+<body class="bg-darkgreen text-beige dark:bg-white dark:text-black">
+  <div class="flex justify-end p-4">
+    <button id="toggleTheme" class="bg-neon text-darkgreen px-4 py-2 rounded font-bold pixel-border">🌓 Toggle Theme</button>
+  </div>
 
-      <!-- Header -->
+  <main class="container mx-auto px-6 py-12 max-w-5xl">
+    <section class="bg-blockgray border-4 border-neon rounded-3xl p-10 dark:bg-light dark:text-black">
       <div class="flex items-center space-x-4 mb-8">
         <div class="w-16 h-16 bg-beige text-darkgreen rounded-full flex items-center justify-center text-2xl">
           <i class="fas fa-file-signature"></i>
         </div>
-        <h1 class="text-lg sm:text-xl font-bold neon-text glow-hover uppercase">Draft Legal Documents</h1>
+        <h1 class="text-lg sm:text-xl font-bold neon-text uppercase">Draft Legal Documents</h1>
       </div>
 
-      <p class="mb-10 text-beige/90 leading-relaxed text-xs glow-hover">
-        Choose a document type and provide all the required details. This helps generate complete and legally appropriate content.
-      </p>
+      <p class="mb-10">Choose a document type and fill in the details to generate your document.</p>
 
-      <!-- Document Type Buttons -->
       <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-6 mb-10">
         <button onclick="selectDocType('nda')" class="doc-type-btn">📄 NDA</button>
         <button onclick="selectDocType('lease')" class="doc-type-btn">🏠 Lease</button>
@@ -88,58 +66,55 @@
         <button onclick="selectDocType('contract')" class="doc-type-btn">📑 Contract</button>
       </div>
 
-      <!-- Form -->
-      <form id="docForm" class="space-y-6 hidden" aria-live="polite"></form>
-      <button id="submitBtn" class="mt-6 bg-accentgreen text-beige px-6 py-3 rounded-md hover:bg-green-700 transition hidden font-semibold glow-hover" type="button">Generate Document</button>
+      <form id="docForm" class="space-y-6 hidden"></form>
+      <button id="submitBtn" class="mt-6 bg-accentgreen text-beige px-6 py-3 rounded hidden" type="button">Generate Document</button>
 
-      <!-- Output -->
       <div id="outputContainer" class="mt-10 hidden">
-        <div id="output" class="p-6 rounded-lg text-xs whitespace-pre-wrap bg-darkgreen border border-neon pixel-border"></div>
-        <button id="downloadBtn" class="mt-4 bg-neon text-darkgreen px-4 py-2 rounded-md font-bold hover:bg-opacity-90 glow-hover transition">
-          ⬇️ Download PDF
-        </button>
+        <div id="output" class="p-6 rounded bg-darkgreen border border-neon pixel-border whitespace-pre-wrap dark:bg-white dark:text-black"></div>
+        <div class="flex gap-4 mt-4">
+          <button id="downloadBtn" class="bg-neon text-darkgreen px-4 py-2 rounded font-bold">⬇️ Download PDF</button>
+          <button id="ttsBtn" style="display:none" class="bg-neon text-darkgreen px-4 py-2 rounded font-bold">🔊 Listen</button>
+          <button id="pauseBtn" style="display:none" class="bg-yellow-300 text-darkgreen px-4 py-2 rounded font-bold">⏸️ Pause</button>
+          <button id="resumeBtn" style="display:none" class="bg-green-300 text-darkgreen px-4 py-2 rounded font-bold">▶️ Resume</button>
+          <button id="stopBtn" style="display:none" class="bg-red-400 text-darkgreen px-4 py-2 rounded font-bold">⏹️ Stop</button>
+        </div>
       </div>
     </section>
   </main>
 
-  <!-- Footer -->
-  <footer class="bg-pixelgray text-beige border-t border-beige px-6 py-10 text-center text-xs mt-10">
-    <p>© 2025 LegalHawk. All Rights Reserved.</p>
-  </footer>
-
-  <!-- Script -->
   <script>
     const form = document.getElementById('docForm');
     const submitBtn = document.getElementById('submitBtn');
     const output = document.getElementById('output');
     const outputContainer = document.getElementById('outputContainer');
     const downloadBtn = document.getElementById('downloadBtn');
+    const toggleThemeBtn = document.getElementById('toggleTheme');
+    const ttsBtn = document.getElementById("ttsBtn");
+    const pauseBtn = document.getElementById("pauseBtn");
+    const resumeBtn = document.getElementById("resumeBtn");
+    const stopBtn = document.getElementById("stopBtn");
     let selectedDocType = null;
+    let currentUtterance = null;
 
-    const fieldsByDocType = {
-      nda: [ { label: 'Effective Date', id: 'date' }, { label: 'Party A Name', id: 'party_a' }, { label: 'Party A Address', id: 'party_a_address' }, { label: 'Party A State', id: 'party_a_state' }, { label: 'Party A Signatory Name', id: 'party_a_signatory' }, { label: 'Party A Signatory Title', id: 'party_a_title' }, { label: 'Party B Name', id: 'party_b' }, { label: 'Party B Address', id: 'party_b_address' }, { label: 'Party B State', id: 'party_b_state' }, { label: 'Party B Signatory Name', id: 'party_b_signatory' }, { label: 'Party B Signatory Title', id: 'party_b_title' }, { label: 'Purpose of NDA', id: 'purpose' }, { label: 'Duration (in years)', id: 'duration' }, { label: 'Governing Law State', id: 'governing_law' }, { label: 'Witness Name (optional)', id: 'witness_name', optional: true } ],
-      lease: [ { label: 'Effective Date', id: 'date' }, { label: 'Landlord Name', id: 'landlord' }, { label: 'Landlord Address', id: 'landlord_address' }, { label: 'Tenant Name', id: 'tenant' }, { label: 'Tenant Address', id: 'tenant_address' }, { label: 'Property Address', id: 'property_address' }, { label: 'Lease Term (in months)', id: 'lease_term' }, { label: 'Monthly Rent', id: 'monthly_rent' }, { label: 'Rent Due Date', id: 'rent_due' }, { label: 'Security Deposit Amount', id: 'security_deposit' }, { label: 'Late Fee Policy', id: 'late_fee' }, { label: 'Utilities Responsibility', id: 'utilities' }, { label: 'Governing Law State', id: 'governing_law' } ],
-      will: [ { label: 'Date', id: 'date' }, { label: 'Testator Full Name', id: 'full_name' }, { label: 'Testator Address', id: 'address' }, { label: 'Beneficiaries (comma separated)', id: 'beneficiaries' }, { label: 'Executor Name', id: 'executor' }, { label: 'Executor Address', id: 'executor_address' }, { label: 'Guardian Name (optional)', id: 'guardian', optional: true }, { label: 'Witness 1 Name', id: 'witness1' }, { label: 'Witness 1 Address', id: 'witness1_address' }, { label: 'Witness 2 Name', id: 'witness2' }, { label: 'Witness 2 Address', id: 'witness2_address' }, { label: 'Governing Law State', id: 'governing_law' } ],
-      contract: [ { label: 'Effective Date', id: 'date' }, { label: 'Party A Name', id: 'party_a' }, { label: 'Party A Address', id: 'party_a_address' }, { label: 'Party A State', id: 'party_a_state' }, { label: 'Party A Signatory Name', id: 'party_a_signatory' }, { label: 'Party A Signatory Title', id: 'party_a_title' }, { label: 'Party B Name', id: 'party_b' }, { label: 'Party B Address', id: 'party_b_address' }, { label: 'Party B State', id: 'party_b_state' }, { label: 'Party B Signatory Name', id: 'party_b_signatory' }, { label: 'Party B Signatory Title', id: 'party_b_title' }, { label: 'Purpose of Contract', id: 'purpose' }, { label: 'Duration of Contract', id: 'duration' }, { label: 'Payment Terms', id: 'payment_terms' }, { label: 'Dispute Resolution (optional)', id: 'dispute_resolution', optional: true }, { label: 'Witness Name (optional)', id: 'witness_name', optional: true }, { label: 'Governing Law State', id: 'governing_law' } ]
-    };
+    const funFacts = [
+      "📜 Did you know? The Code of Hammurabi is one of the oldest legal texts!",
+      "⚖️ The word 'attorney' comes from a French word meaning 'to act on behalf of another'."
+    ];
 
     function createInputField({ label, id, optional }) {
       const wrapper = document.createElement('div');
       wrapper.className = 'flex flex-col';
-
       const labelEl = document.createElement('label');
       labelEl.htmlFor = id;
       labelEl.textContent = optional ? `${label} (Optional)` : label;
-      labelEl.className = 'mb-1 font-semibold text-beige';
-
+      labelEl.className = 'mb-1';
       const inputEl = document.createElement('input');
       inputEl.type = 'text';
       inputEl.id = id;
       inputEl.name = id;
       inputEl.placeholder = optional ? '(Optional)' : '';
       if (!optional) inputEl.required = true;
-      inputEl.className = 'bg-pixelgray border border-beige text-beige placeholder-beige/60 rounded-md p-2 focus:outline-none focus:ring-2 focus:ring-neon';
-
+      inputEl.className = 'bg-pixelgray border border-beige text-beige placeholder-beige/60 rounded-md p-2 dark:bg-white dark:text-black';
       wrapper.appendChild(labelEl);
       wrapper.appendChild(inputEl);
       return wrapper;
@@ -169,8 +144,8 @@
 
           const formData = new FormData(form);
           const rawInputs = Object.fromEntries(formData);
-
-          output.textContent = "⏳ Generating document...";
+          const fact = funFacts[Math.floor(Math.random() * funFacts.length)];
+          output.textContent = `⏳ Generating document...\n\n💡 ${fact}`;
           outputContainer.classList.remove('hidden');
 
           try {
@@ -179,15 +154,14 @@
               headers: { 'Content-Type': 'application/json' },
               body: JSON.stringify({ type: selectedDocType, inputs: rawInputs })
             });
-
             const result = await response.json();
             output.textContent = result.document || result.error || "⚠️ No response.";
-
             form.reset();
             form.classList.add('hidden');
             submitBtn.classList.add('hidden');
+            ttsBtn.style.display = 'inline-block';
           } catch (error) {
-            console.error('❌ Error:', error);
+            console.error('Error:', error);
             output.textContent = "❌ Error generating document.";
           }
         };
@@ -204,9 +178,79 @@
       }).save();
     });
 
+    toggleThemeBtn.addEventListener("click", () => {
+      const html = document.getElementById("html");
+      const isDark = html.classList.contains("dark");
+      html.classList.toggle("dark", !isDark);
+      localStorage.setItem("theme", isDark ? "light" : "dark");
+    });
+
+    window.onload = () => {
+      const hour = new Date().getHours();
+      const storedTheme = localStorage.getItem("theme");
+      const html = document.getElementById("html");
+      if (storedTheme) {
+        html.classList.toggle("dark", storedTheme === "dark");
+      } else {
+        html.classList.toggle("dark", !(hour >= 6 && hour < 18));
+      }
+    };
+
+    ttsBtn.addEventListener("click", () => {
+      const text = output.textContent;
+      if (!text.trim()) return;
+
+      const utterance = new SpeechSynthesisUtterance(text);
+      utterance.lang = "en-US";
+      utterance.pitch = 1;
+      utterance.rate = 1;
+
+      currentUtterance = utterance;
+      ttsBtn.disabled = true;
+      pauseBtn.style.display = stopBtn.style.display = 'inline-block';
+      resumeBtn.style.display = 'none';
+
+      utterance.onend = () => {
+        ttsBtn.disabled = false;
+        pauseBtn.style.display = resumeBtn.style.display = stopBtn.style.display = 'none';
+      };
+
+      speechSynthesis.cancel();
+      speechSynthesis.speak(utterance);
+    });
+
+    pauseBtn.addEventListener("click", () => {
+      if (speechSynthesis.speaking && !speechSynthesis.paused) {
+        speechSynthesis.pause();
+        pauseBtn.style.display = "none";
+        resumeBtn.style.display = "inline-block";
+      }
+    });
+
+    resumeBtn.addEventListener("click", () => {
+      if (speechSynthesis.paused) {
+        speechSynthesis.resume();
+        resumeBtn.style.display = "none";
+        pauseBtn.style.display = "inline-block";
+      }
+    });
+
+    stopBtn.addEventListener("click", () => {
+      speechSynthesis.cancel();
+      ttsBtn.disabled = false;
+      pauseBtn.style.display = resumeBtn.style.display = stopBtn.style.display = "none";
+    });
+
     document.querySelectorAll(".doc-type-btn").forEach(btn => {
       btn.classList.add("pixel-border", "hover:scale-105", "transition", "rounded-xl", "p-6", "text-center", "text-beige", "glow-hover");
     });
+
+    const fieldsByDocType = {
+      nda: [ { label: 'Effective Date', id: 'date' }, { label: 'Party A Name', id: 'party_a' }, { label: 'Party A Address', id: 'party_a_address' }, { label: 'Party A State', id: 'party_a_state' }, { label: 'Party A Signatory Name', id: 'party_a_signatory' }, { label: 'Party A Signatory Title', id: 'party_a_title' }, { label: 'Party B Name', id: 'party_b' }, { label: 'Party B Address', id: 'party_b_address' }, { label: 'Party B State', id: 'party_b_state' }, { label: 'Party B Signatory Name', id: 'party_b_signatory' }, { label: 'Party B Signatory Title', id: 'party_b_title' }, { label: 'Purpose of NDA', id: 'purpose' }, { label: 'Duration (in years)', id: 'duration' }, { label: 'Governing Law State', id: 'governing_law' }, { label: 'Witness Name (optional)', id: 'witness_name', optional: true } ],
+      lease: [ { label: 'Effective Date', id: 'date' }, { label: 'Landlord Name', id: 'landlord' }, { label: 'Landlord Address', id: 'landlord_address' }, { label: 'Tenant Name', id: 'tenant' }, { label: 'Tenant Address', id: 'tenant_address' }, { label: 'Property Address', id: 'property_address' }, { label: 'Lease Term (in months)', id: 'lease_term' }, { label: 'Monthly Rent', id: 'monthly_rent' }, { label: 'Rent Due Date', id: 'rent_due' }, { label: 'Security Deposit Amount', id: 'security_deposit' }, { label: 'Late Fee Policy', id: 'late_fee' }, { label: 'Utilities Responsibility', id: 'utilities' }, { label: 'Governing Law State', id: 'governing_law' } ],
+      will: [ { label: 'Date', id: 'date' }, { label: 'Testator Full Name', id: 'full_name' }, { label: 'Testator Address', id: 'address' }, { label: 'Beneficiaries (comma separated)', id: 'beneficiaries' }, { label: 'Executor Name', id: 'executor' }, { label: 'Executor Address', id: 'executor_address' }, { label: 'Guardian Name (optional)', id: 'guardian', optional: true }, { label: 'Witness 1 Name', id: 'witness1' }, { label: 'Witness 1 Address', id: 'witness1_address' }, { label: 'Witness 2 Name', id: 'witness2' }, { label: 'Witness 2 Address', id: 'witness2_address' }, { label: 'Governing Law State', id: 'governing_law' } ],
+      contract: [ { label: 'Effective Date', id: 'date' }, { label: 'Party A Name', id: 'party_a' }, { label: 'Party A Address', id: 'party_a_address' }, { label: 'Party A State', id: 'party_a_state' }, { label: 'Party A Signatory Name', id: 'party_a_signatory' }, { label: 'Party A Signatory Title', id: 'party_a_title' }, { label: 'Party B Name', id: 'party_b' }, { label: 'Party B Address', id: 'party_b_address' }, { label: 'Party B State', id: 'party_b_state' }, { label: 'Party B Signatory Name', id: 'party_b_signatory' }, { label: 'Party B Signatory Title', id: 'party_b_title' }, { label: 'Purpose of Contract', id: 'purpose' }, { label: 'Duration of Contract', id: 'duration' }, { label: 'Payment Terms', id: 'payment_terms' }, { label: 'Dispute Resolution (optional)', id: 'dispute_resolution', optional: true }, { label: 'Witness Name (optional)', id: 'witness_name', optional: true }, { label: 'Governing Law State', id: 'governing_law' } ]
+    };
   </script>
 </body>
 </html>

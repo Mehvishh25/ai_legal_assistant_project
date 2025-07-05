@@ -1,38 +1,40 @@
-# Core Web Framework
+# 🌐 Web Framework
 flask
 flask-cors
 python-dotenv
 
-# PDF & OCR
+# 📄 PDF & OCR
 pypdf
 pdf2image
 pytesseract
+pdfplumber
 
-# Text Utilities
+# 🌍 Language & Text
 langdetect
 
-# AI Integrations
+# 🤖 AI & LLM Integration
 huggingface_hub
 langchain
 langchain-community
 langchain-core
 langchain-groq
 langchain-ollama
+google-generativeai
+openai
+tiktoken
 
-# Vector DB
+# 🧠 Vector Database
 faiss-cpu
 
-# Optional (for Groq/OpenAI etc. if needed)
-openai
-
-#google-generative-ai
-google-generativeai
-
-# for case_finder
-Flask
-python-dotenv
+# 🕵️ Web Scraping for Case Finder
 selenium
 webdriver-manager
 beautifulsoup4
-google-generativeai
+requests
+lxml
 
+# 💬 Telegram Bot (optional)
+python-telegram-bot
+
+# 🖥️ Server Deployment
+gunicorn

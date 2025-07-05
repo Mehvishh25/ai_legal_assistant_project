@@ -19,7 +19,7 @@ from telegram.ext import (
 )
 
 # Set your Gemini API key here
-os.environ["GEMINI_API_KEY"] = ""
+os.environ["GEMINI_API_KEY"] = "AIzaSyBb0yOnYLBoicKe8SEajKCeMxqqAzneyzI"
 genai.configure(api_key=os.getenv("GEMINI_API_KEY"))
 
 FEATURES = [
@@ -483,7 +483,7 @@ async def legal_cancel(update: Update, context: ContextTypes.DEFAULT_TYPE):
 
 
 def main():
-    application = ApplicationBuilder().token("").build()
+    application = ApplicationBuilder().token("7606492825:AAEZo-LO2RQITlsuqq3Xy9hc7MsxkqKaAqY").build()
 
     # Conversation handler for Legal Drafter
     legal_drafter_conv = ConversationHandler(

@@ -1,178 +1,293 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>LegalHawk</title>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>LegalHawk</title>
 
-  <!-- Tailwind CSS -->
-  <script src="https://cdn.tailwindcss.com"></script>
-  <script>
-    tailwind.config = {
-      theme: {
-        extend: {
-          fontFamily: {
-            pixel: ['"Press Start 2P"', "monospace"]
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            fontFamily: {
+              pixel: ['"Press Start 2P"', "monospace"],
+            },
+            colors: {
+              darkgreen: "#192819",
+              beige: "#F5F1E3",
+              accentgreen: "#2F5D50",
+              pixelgray: "#1F1F1F",
+              neon: "#00FFB2",
+              blockgray: "#2A2A2A",
+              lightgray: "#e0e0e0",
+              darktext: "#0f0f0f",
+            },
+            backgroundImage: {
+              "pixel-pattern":
+                "repeating-linear-gradient(45deg, #1f1f1f 0, #1f1f1f 1px, #192819 1px, #192819 4px)",
+            },
           },
-          colors: {
-            darkgreen: '#192819',
-            beige: '#F5F1E3',
-            accentgreen: '#2F5D50',
-            pixelgray: '#1F1F1F',
-            neon: '#00FFB2',
-            blockgray: '#2A2A2A',
-          },
-          backgroundImage: {
-            'pixel-pattern': "repeating-linear-gradient(45deg, #1f1f1f 0, #1f1f1f 1px, #192819 1px, #192819 4px)"
-          }
-        }
+        },
+      };
+    </script>
+
+    <!-- Pixel Font -->
+    <link
+      href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap"
+      rel="stylesheet"
+    />
+
+    <!-- FontAwesome -->
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"
+      crossorigin="anonymous"
+    />
+
+    <style>
+      html {
+        scroll-behavior: smooth;
       }
-    };
-  </script>
 
-  <!-- Pixel Font -->
-  <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
+      body {
+        background-image: repeating-linear-gradient(
+          45deg,
+          #1f1f1f 0,
+          #1f1f1f 1px,
+          #192819 1px,
+          #192819 4px
+        );
+      }
 
-  <!-- FontAwesome -->
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" crossorigin="anonymous" />
+      .pixel-border {
+        border: 3px solid #00FFB2;
+        box-shadow: 4px 4px 0 #000;
+      }
 
-  <!-- Custom Styles -->
-  <style>
-    html {
-      scroll-behavior: smooth;
-    }
+      .neon-text {
+        color: #00FFB2;
+        text-shadow: 0 0 6px #00FFB2;
+      }
 
-    body {
-      background-image: repeating-linear-gradient(45deg, #1f1f1f 0, #1f1f1f 1px, #192819 1px, #192819 4px);
-    }
+      .glow-hover:hover {
+        text-shadow: 0 0 10px #00FFB2, 0 0 20px #00FFB2;
+      }
 
-    .pixel-border {
-      border: 3px solid #00FFB2;
-      box-shadow: 4px 4px 0 #000;
-    }
+      .rotate-icon {
+        transition: transform 0.3s ease;
+      }
+    </style>
+  </head>
 
-    .neon-text {
-      color: #00FFB2;
-      text-shadow: 0 0 6px #00FFB2;
-    }
-
-    .glow-hover:hover {
-      text-shadow: 0 0 10px #00FFB2, 0 0 20px #00FFB2;
-    }
-  </style>
-</head>
-
-<body class="text-beige font-pixel text-xs tracking-wider">
-
-  <!-- ✅ Navbar -->
-  <header class="px-6 py-4 border-b-2 border-neon bg-pixelgray shadow-lg">
-    <nav class="flex flex-col lg:flex-row items-center justify-between gap-6">
+  <body
+    class="text-beige font-pixel text-xs tracking-wider bg-darkgreen dark:bg-white dark:text-darktext"
+  >
+    <!-- ✅ Navbar -->
+    <header
+      class="px-6 py-4 border-b-2 border-neon bg-pixelgray shadow-lg flex justify-between items-center"
+    >
       <div class="text-lg md:text-xl neon-text uppercase tracking-widest">
         LegalHawk
       </div>
-      <ul class="flex flex-wrap justify-center gap-6 text-xs">
-        <li><a href="/" class="neon-text hover:glow-hover">Home</a></li>
-        <li><a href="/blog" class="neon-text hover:glow-hover">Blog</a></li>
-        <li><a href="/pdf-qa" class="neon-text hover:glow-hover">PDF Q&A</a></li>
-        <li><a href="/pdf-summary" class="neon-text hover:glow-hover">Summarizer</a></li>
-        <li><a href="/legal-chat" class="neon-text hover:glow-hover">Legal Chat</a></li>
-        <li><a href="/case-finder" class="neon-text hover:glow-hover">Case Finder</a></li>
-        <li><a href="/legal-doc-drafter" class="neon-text hover:glow-hover">Doc Drafter</a></li>
-        <li><a href="/adversarial-generator" class="neon-text hover:glow-hover">Argument Gen</a></li>
-        <li><a href="/legal-news" class="neon-text hover:glow-hover">Legal News</a></li> <!-- ✅ NEW -->
-      </ul>
-    </nav>
-  </header>
 
-  <!-- ✅ Hero -->
-  <section class="px-6 py-10 lg:px-16 flex flex-col lg:flex-row items-center justify-between gap-10 border-y-4 border-neon">
-    <div class="lg:w-1/2 space-y-6 text-center lg:text-left">
-      <h1 class="text-2xl md:text-3xl font-bold neon-text uppercase">LegalHawk</h1>
-      <p class="text-xs leading-relaxed max-w-xl mx-auto lg:mx-0">
-        Your intelligent legal tool — simplifying legal research, document drafting & AI-based support.
-      </p>
-      <div class="flex flex-col sm:flex-row items-center justify-center lg:justify-start gap-4 mt-4">
-        <a href="/blog" class="bg-accentgreen text-beige px-6 py-3 rounded-md pixel-border glow-hover">🧠 Blog</a>
-        <a href="https://t.me/AILegal_Assistant_bot" target="_blank"
-          class="bg-[#229ED9] text-white px-6 py-3 rounded-md pixel-border flex items-center gap-2 glow-hover">
-          <i class="fab fa-telegram-plane"></i> Telegram Bot
+      <!-- Toggle -->
+      <button
+        id="themeToggle"
+        class="text-sm px-3 py-1 bg-neon text-darkgreen rounded pixel-border glow-hover"
+        title="Toggle theme"
+      >
+        🌙
+      </button>
+    </header>
+
+    <!-- ✅ Hero -->
+    <section
+      class="px-6 py-10 lg:px-16 flex flex-col lg:flex-row items-center justify-between gap-10 border-y-4 border-neon"
+    >
+      <div class="lg:w-1/2 space-y-6 text-center lg:text-left">
+        <h1 class="text-2xl md:text-3xl font-bold neon-text uppercase">
+          LegalHawk
+        </h1>
+        <p class="text-xs leading-relaxed max-w-xl mx-auto lg:mx-0">
+          Your intelligent legal tool — simplifying legal research, document
+          drafting & AI-based support.
+        </p>
+        <div
+          class="flex flex-col sm:flex-row items-center justify-center lg:justify-start gap-4 mt-4"
+        >
+          <a
+            href="/blog"
+            class="bg-accentgreen text-beige px-6 py-3 rounded-md pixel-border glow-hover"
+            >🧠 Blog</a
+          >
+          <a
+            href="https://t.me/AILegal_Assistant_bot"
+            target="_blank"
+            class="bg-[#229ED9] text-white px-6 py-3 rounded-md pixel-border flex items-center gap-2 glow-hover"
+          >
+            <i class="fab fa-telegram-plane"></i> Telegram Bot
+          </a>
+        </div>
+      </div>
+
+      <div class="lg:w-1/2 flex justify-center">
+        <img
+          src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRrevH_lyP0qw2YR2S0i6VayLvYhtendyDRHA&usqp=CAU"
+          class="rounded-xl shadow-xl w-72 md:w-[400px] pixel-border"
+          alt="LegalHawk"
+        />
+      </div>
+    </section>
+
+    <!-- ✅ Features -->
+    <section
+      class="px-6 py-16 lg:px-20 bg-pixelgray text-center border-t-4 border-neon"
+    >
+      <h2 class="text-lg md:text-xl neon-text mb-10 uppercase">Features</h2>
+      <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-10">
+        <a
+          href="/pdf-qa"
+          class="block bg-darkgreen p-6 rounded-xl pixel-border hover:scale-105 transition glow-hover"
+        >
+          <i class="fas fa-file-pdf text-2xl mb-4 neon-text"></i>
+          <h3 class="text-sm mb-2">PDF Q&A</h3>
+          <p class="text-xs">
+            Ask legal PDFs and get instant Gemini-powered answers.
+          </p>
+        </a>
+
+        <a
+          href="/pdf-summary"
+          class="block bg-darkgreen p-6 rounded-xl pixel-border hover:scale-105 transition glow-hover"
+        >
+          <i class="fas fa-highlighter text-2xl mb-4 neon-text"></i>
+          <h3 class="text-sm mb-2">PDF Summarizer</h3>
+          <p class="text-xs">
+            Summarize long legal documents quickly and easily.
+          </p>
+        </a>
+
+        <a
+          href="/legal-chat"
+          class="block bg-darkgreen p-6 rounded-xl pixel-border hover:scale-105 transition glow-hover"
+        >
+          <i class="fas fa-comments text-2xl mb-4 neon-text"></i>
+          <h3 class="text-sm mb-2">Legal Chatbot</h3>
+          <p class="text-xs">
+            Chat with a bot trained on Indian laws and judgments.
+          </p>
         </a>
       </div>
-    </div>
 
-    <div class="lg:w-1/2 flex justify-center">
-      <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRrevH_lyP0qw2YR2S0i6VayLvYhtendyDRHA&usqp=CAU"
-        class="rounded-xl shadow-xl w-72 md:w-[400px] pixel-border" alt="LegalHawk" />
-    </div>
-  </section>
+      <div class="flex flex-wrap justify-center gap-10 pt-12">
+        <a
+          href="/legal-doc-drafter"
+          class="block bg-darkgreen p-6 rounded-xl pixel-border hover:scale-105 transition glow-hover w-full max-w-xs"
+        >
+          <i class="fas fa-file-signature text-2xl mb-4 neon-text"></i>
+          <h3 class="text-sm mb-2">Doc Drafter</h3>
+          <p class="text-xs">
+            Generate NDAs, wills, lease agreements, and more.
+          </p>
+        </a>
 
-  <!-- ✅ Features -->
-  <section class="px-6 py-16 lg:px-20 bg-pixelgray text-center border-t-4 border-neon">
-    <h2 class="text-lg md:text-xl neon-text mb-10 uppercase">Features</h2>
-    <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-10">
+        <a
+          href="/case-finder"
+          class="block bg-darkgreen p-6 rounded-xl pixel-border hover:scale-105 transition glow-hover w-full max-w-xs"
+        >
+          <i class="fas fa-gavel text-2xl mb-4 neon-text"></i>
+          <h3 class="text-sm mb-2">Case Finder</h3>
+          <p class="text-xs">
+            Search Indian Kanoon cases with keyword summaries.
+          </p>
+        </a>
 
-      <a href="/pdf-qa" class="block bg-darkgreen p-6 rounded-xl pixel-border hover:scale-105 transition glow-hover">
-        <i class="fas fa-file-pdf text-2xl mb-4 neon-text"></i>
-        <h3 class="text-sm mb-2">PDF Q&A</h3>
-        <p class="text-xs">Ask legal PDFs and get instant Gemini-powered answers.</p>
+        <a
+          href="/adversarial-generator"
+          class="block bg-darkgreen p-6 rounded-xl pixel-border hover:scale-105 transition glow-hover w-full max-w-xs"
+        >
+          <i class="fas fa-balance-scale text-2xl mb-4 neon-text"></i>
+          <h3 class="text-sm mb-2">Adversarial Generator</h3>
+          <p class="text-xs">
+            Generate both prosecution and defense arguments from a case
+            description.
+          </p>
+        </a>
+
+        <a
+          href="/legal-news"
+          class="block bg-darkgreen p-6 rounded-xl pixel-border hover:scale-105 transition glow-hover w-full max-w-xs"
+        >
+          <i class="fas fa-newspaper text-2xl mb-4 neon-text"></i>
+          <h3 class="text-sm mb-2">Legal News</h3>
+          <p class="text-xs">
+            Get real-time legal news updates powered by public APIs.
+          </p>
+        </a>
+      </div>
+    </section>
+
+    <!-- ✅ CTA -->
+    <section class="bg-neon text-darkgreen px-6 py-16 text-center">
+      <h2 class="text-lg md:text-xl mb-4 uppercase">Ready to Simplify Law?</h2>
+      <p class="text-xs max-w-xl mx-auto mb-6">
+        Join our beta and transform legal workflows with AI-driven tools.
+      </p>
+      <a
+        href="#"
+        class="inline-block bg-darkgreen text-beige px-6 py-3 rounded-md hover:bg-opacity-80 transition glow-hover"
+      >
+        Get Started
       </a>
+    </section>
 
-      <a href="/pdf-summary" class="block bg-darkgreen p-6 rounded-xl pixel-border hover:scale-105 transition glow-hover">
-        <i class="fas fa-highlighter text-2xl mb-4 neon-text"></i>
-        <h3 class="text-sm mb-2">PDF Summarizer</h3>
-        <p class="text-xs">Summarize long legal documents quickly and easily.</p>
-      </a>
+    <!-- ✅ Footer -->
+    <footer
+      class="bg-pixelgray text-beige border-t border-beige px-6 py-10 text-center text-xs"
+    >
+      <p class="mb-2">© 2025 LegalHawk. All Rights Reserved.</p>
+    </footer>
 
-      <a href="/legal-chat" class="block bg-darkgreen p-6 rounded-xl pixel-border hover:scale-105 transition glow-hover">
-        <i class="fas fa-comments text-2xl mb-4 neon-text"></i>
-        <h3 class="text-sm mb-2">Legal Chatbot</h3>
-        <p class="text-xs">Chat with a bot trained on Indian laws and judgments.</p>
-      </a>
+    <!-- ✅ Theme Toggle Script -->
+    <script>
+      const themeToggle = document.getElementById("themeToggle");
+      const htmlEl = document.documentElement;
 
-    </div>
+      function setTheme(dark, save = true) {
+        if (dark) {
+          htmlEl.classList.add("dark");
+          themeToggle.textContent = "☀️";
+          if (save) localStorage.setItem("theme", "dark");
+        } else {
+          htmlEl.classList.remove("dark");
+          themeToggle.textContent = "🌙";
+          if (save) localStorage.setItem("theme", "light");
+        }
+      }
 
-    <div class="flex flex-wrap justify-center gap-10 pt-12">
+      // Load theme based on time or saved preference
+      window.addEventListener("DOMContentLoaded", () => {
+        const stored = localStorage.getItem("theme");
+        const hour = new Date().getHours();
+        const isNight = hour >= 18 || hour < 6;
 
-      <a href="/legal-doc-drafter" class="block bg-darkgreen p-6 rounded-xl pixel-border hover:scale-105 transition glow-hover w-full max-w-xs">
-        <i class="fas fa-file-signature text-2xl mb-4 neon-text"></i>
-        <h3 class="text-sm mb-2">Doc Drafter</h3>
-        <p class="text-xs">Generate NDAs, wills, lease agreements, and more.</p>
-      </a>
+        if (stored === "dark") {
+          setTheme(true, false);
+        } else if (stored === "light") {
+          setTheme(false, false);
+        } else {
+          setTheme(isNight, false);
+        }
+      });
 
-      <a href="/case-finder" class="block bg-darkgreen p-6 rounded-xl pixel-border hover:scale-105 transition glow-hover w-full max-w-xs">
-        <i class="fas fa-gavel text-2xl mb-4 neon-text"></i>
-        <h3 class="text-sm mb-2">Case Finder</h3>
-        <p class="text-xs">Search Indian Kanoon cases with keyword summaries.</p>
-      </a>
-
-      <a href="/adversarial-generator" class="block bg-darkgreen p-6 rounded-xl pixel-border hover:scale-105 transition glow-hover w-full max-w-xs">
-        <i class="fas fa-balance-scale text-2xl mb-4 neon-text"></i>
-        <h3 class="text-sm mb-2">Adversarial Generator</h3>
-        <p class="text-xs">Generate both prosecution and defense arguments from a case description.</p>
-      </a>
-
-      <a href="/legal-news" class="block bg-darkgreen p-6 rounded-xl pixel-border hover:scale-105 transition glow-hover w-full max-w-xs"> <!-- ✅ NEW CARD -->
-        <i class="fas fa-newspaper text-2xl mb-4 neon-text"></i>
-        <h3 class="text-sm mb-2">Legal News</h3>
-        <p class="text-xs">Get real-time legal news updates powered by public APIs.</p>
-      </a>
-
-    </div>
-  </section>
-
-  <!-- ✅ CTA -->
-  <section class="bg-neon text-darkgreen px-6 py-16 text-center">
-    <h2 class="text-lg md:text-xl mb-4 uppercase">Ready to Simplify Law?</h2>
-    <p class="text-xs max-w-xl mx-auto mb-6">Join our beta and transform legal workflows with AI-driven tools.</p>
-    <a href="#" class="inline-block bg-darkgreen text-beige px-6 py-3 rounded-md hover:bg-opacity-80 transition glow-hover">
-      Get Started
-    </a>
-  </section>
-
-  <!-- ✅ Footer -->
-  <footer class="bg-pixelgray text-beige border-t border-beige px-6 py-10 text-center text-xs">
-    <p class="mb-2">© 2025 LegalHawk. All Rights Reserved.</p>
-  </footer>
-
-</body>
+      // Toggle on click
+      themeToggle.addEventListener("click", () => {
+        const isDark = htmlEl.classList.contains("dark");
+        setTheme(!isDark);
+      });
+    </script>
+  </body>
 </html>

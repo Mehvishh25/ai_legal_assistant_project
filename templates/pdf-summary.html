@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" id="html">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -9,6 +9,7 @@
   <script src="https://cdn.tailwindcss.com"></script>
   <script>
     tailwind.config = {
+      darkMode: 'class',
       theme: {
         extend: {
           fontFamily: {
@@ -28,47 +29,31 @@
 
   <!-- Pixel Font -->
   <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
-
-  <!-- FontAwesome -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css" crossorigin="anonymous" />
-
-  <!-- jsPDF -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
 
-  <!-- Custom Styles -->
   <style>
     body {
-      background-color: #192819;
-      color: #f5f1e3;
       font-family: 'Press Start 2P', monospace;
       font-size: 10px;
+      transition: background-color 0.3s, color 0.3s;
     }
-
-    .neon-text {
-      color: #00FFB2;
-      text-shadow: 0 0 6px #00FFB2;
-    }
-
-    .glow-hover:hover {
-      text-shadow: 0 0 10px #00FFB2, 0 0 20px #00FFB2;
-    }
-
-    .pixel-border {
-      border: 3px solid #00FFB2;
-      box-shadow: 4px 4px 0 #000;
-    }
-
-    input, button, textarea {
-      font-family: 'Press Start 2P', monospace !important;
-    }
+    .neon-text { color: #00FFB2; text-shadow: 0 0 6px #00FFB2; }
+    .glow-hover:hover { text-shadow: 0 0 10px #00FFB2, 0 0 20px #00FFB2; }
+    .pixel-border { border: 3px solid #00FFB2; box-shadow: 4px 4px 0 #000; }
+    input, button, textarea { font-family: 'Press Start 2P', monospace !important; }
   </style>
 </head>
 
-<body class="flex flex-col min-h-screen bg-darkgreen text-beige font-pixel tracking-tighter">
+<body class="flex flex-col min-h-screen bg-white text-darkgreen font-pixel tracking-tighter dark:bg-darkgreen dark:text-beige">
+  <!-- Theme Toggle -->
+  <div class="fixed top-4 right-6 z-50">
+    <button onclick="toggleTheme()" class="bg-neon text-darkgreen px-2 py-1 rounded pixel-border font-bold text-xs">🌓 Toggle</button>
+  </div>
 
   <!-- Main Content -->
   <main class="flex-grow container mx-auto px-6 py-12 max-w-4xl">
-    <section class="bg-gradient-to-br from-accentgreen to-darkgreen rounded-3xl p-10 shadow-2xl pixel-border">
+    <section class="bg-gradient-to-br from-accentgreen to-darkgreen dark:from-beige dark:to-white rounded-3xl p-10 shadow-2xl pixel-border">
       <div class="flex items-center space-x-4 mb-6">
         <div class="w-16 h-16 bg-beige text-darkgreen rounded-full flex items-center justify-center text-2xl neon-text">
           <i class="fas fa-highlighter"></i>
@@ -76,43 +61,50 @@
         <h1 class="text-lg sm:text-xl font-bold neon-text uppercase glow-hover">PDF Summarizer</h1>
       </div>
 
-      <p class="mb-8 text-beige/90 leading-relaxed text-xs">
-        Upload your legal PDFs to generate AI-powered summaries and extract important clauses — all with pixel-perfect precision.
-      </p>
+      <div id="funFact" class="text-xs mb-6 text-neon font-bold"></div>
+      <p class="mb-8">Upload your legal PDFs to generate AI-powered summaries and extract important clauses — all with pixel-perfect precision.</p>
 
-      <!-- Upload Area -->
-      <div class="border-4 border-dashed border-neon rounded-xl p-12 text-center text-beige/70 hover:text-beige hover:border-accentgreen cursor-pointer transition relative pixel-border">
+      <!-- Upload -->
+      <div class="border-4 border-dashed border-neon rounded-xl p-12 text-center cursor-pointer pixel-border dark:text-beige">
         <i class="fas fa-upload text-4xl mb-4 neon-text"></i>
         <p class="text-xs font-medium glow-hover">Click or drag and drop your PDF file here</p>
         <input id="summary-file" type="file" accept=".pdf" class="opacity-0 absolute inset-0 w-full h-full cursor-pointer" aria-label="Upload PDF" />
       </div>
 
-      <!-- Summary Output -->
-      <div id="summary-output" class="mt-8 p-6 bg-beige/10 rounded-lg min-h-[120px] text-beige border border-neon font-pixel text-xs">
-        <p class="italic text-center text-beige/70">Your summary will appear here.</p>
+      <!-- Output -->
+      <div id="summary-output" class="mt-8 p-6 bg-beige/10 rounded-lg min-h-[120px] text-darkgreen border border-neon text-xs dark:bg-beige/30">
+        <p class="italic text-center text-darkgreen/70 dark:text-dark/60">Your summary will appear here.</p>
       </div>
 
-      <!-- Download Button -->
-      <button id="download-btn" style="display:none;" class="mt-6 px-6 py-3 bg-neon text-darkgreen font-bold rounded-md hover:bg-opacity-90 transition-all glow-hover">
-        ⬇️ Download Summary PDF
-      </button>
+      <!-- Action Buttons -->
+      <div class="flex flex-wrap gap-4 mt-6">
+        <button id="download-btn" style="display:none;" class="px-6 py-3 bg-neon text-darkgreen font-bold rounded-md hover:bg-opacity-90 glow-hover">⬇️ Download Summary PDF</button>
+        <button id="tts-btn" style="display:none;" class="px-6 py-3 bg-neon text-darkgreen font-bold rounded-md hover:bg-opacity-90 glow-hover">🔊 Listen to Summary</button>
+        <button id="pause-btn" style="display:none;" class="px-6 py-3 bg-yellow-300 text-darkgreen font-bold rounded-md hover:bg-opacity-90 glow-hover">⏸️ Pause</button>
+        <button id="resume-btn" style="display:none;" class="px-6 py-3 bg-green-300 text-darkgreen font-bold rounded-md hover:bg-opacity-90 glow-hover">▶️ Resume</button>
+        <button id="stop-btn" style="display:none;" class="px-6 py-3 bg-red-400 text-darkgreen font-bold rounded-md hover:bg-opacity-90 glow-hover">⏹️ Stop</button>
+      </div>
     </section>
   </main>
 
-  <!-- Footer -->
-  <footer class="bg-darkgreen text-beige border-t border-beige px-6 py-8 mt-12 text-center text-xs">
+  <footer class="bg-white text-black border-t border-beige px-6 py-8 mt-12 text-center text-xs dark:bg-darkgreen dark:text-beige">
     © 2025 LegalHawk. All rights reserved.
   </footer>
 
-  <!-- JS -->
   <script>
     const { jsPDF } = window.jspdf;
-    const summaryFileInput = document.getElementById("summary-file");
+    const summaryInput = document.getElementById("summary-file");
     const outputDiv = document.getElementById("summary-output");
     const downloadBtn = document.getElementById("download-btn");
-    let currentSummaryData = null;
+    const ttsBtn = document.getElementById("tts-btn");
+    const pauseBtn = document.getElementById("pause-btn");
+    const resumeBtn = document.getElementById("resume-btn");
+    const stopBtn = document.getElementById("stop-btn");
 
-    summaryFileInput.addEventListener("change", async function (event) {
+    let currentSummaryData = null;
+    let currentUtterance = null;
+
+    summaryInput.addEventListener("change", async (event) => {
       const file = event.target.files[0];
       if (!file) return;
 
@@ -121,18 +113,13 @@
       formData.append("length", "medium");
 
       outputDiv.innerHTML = `<p class="italic text-center">Summarizing...</p>`;
-      downloadBtn.style.display = "none";
+      downloadBtn.style.display = ttsBtn.style.display = pauseBtn.style.display = stopBtn.style.display = resumeBtn.style.display = "none";
 
       try {
         const response = await fetch("/summarize", {
           method: "POST",
           body: formData
         });
-
-        if (!response.ok) {
-          throw new Error(`Server error: ${response.status}`);
-        }
-
         const data = await response.json();
         currentSummaryData = data;
 
@@ -140,15 +127,70 @@
           <h3 class="text-sm font-bold mb-2 neon-text">📄 Summary</h3>
           <p class="mb-4">${data.summary}</p>
           <h3 class="text-sm font-bold mt-6 mb-2 neon-text">⚖️ Important Clauses</h3>
-          <ul class="list-disc ml-6">${Object.entries(data.clauses).map(([k, v]) => `<li class="mb-2"><strong>${k}:</strong> ${v.join("; ")}</li>`).join("")}</ul>
+          <ul class="list-disc ml-6">
+            ${Object.entries(data.clauses).map(([k, v]) => `<li><strong>${k}:</strong> ${v.join("; ")}</li>`).join("")}
+          </ul>
         `;
 
-        downloadBtn.style.display = "inline-block";
-
-      } catch (error) {
-        outputDiv.innerHTML = `<p class="italic text-center text-red-400">Error: ${error.message}</p>`;
-        downloadBtn.style.display = "none";
+        downloadBtn.style.display = ttsBtn.style.display = "inline-block";
+      } catch (err) {
+        outputDiv.innerHTML = `<p class="italic text-center text-red-400">Error: ${err.message}</p>`;
       }
+    });
+
+    ttsBtn.addEventListener("click", () => {
+      if (!currentSummaryData) return;
+
+      let speechText = `Summary: ${currentSummaryData.summary}. `;
+      if (currentSummaryData.clauses) {
+        speechText += "Important Clauses: ";
+        for (const [key, values] of Object.entries(currentSummaryData.clauses)) {
+          speechText += `${key}. ${values.join(". ")}. `;
+        }
+      }
+
+      const utterance = new SpeechSynthesisUtterance(speechText);
+      utterance.lang = "en-US";
+      utterance.pitch = 1;
+      utterance.rate = 1;
+
+      currentUtterance = utterance;
+      ttsBtn.disabled = true;
+      ttsBtn.textContent = "🔊 Playing...";
+      pauseBtn.style.display = stopBtn.style.display = "inline-block";
+      resumeBtn.style.display = "none";
+
+      utterance.onend = () => {
+        ttsBtn.disabled = false;
+        ttsBtn.textContent = "🔊 Listen to Summary";
+        pauseBtn.style.display = stopBtn.style.display = resumeBtn.style.display = "none";
+      };
+
+      speechSynthesis.cancel();
+      speechSynthesis.speak(utterance);
+    });
+
+    pauseBtn.addEventListener("click", () => {
+      if (speechSynthesis.speaking && !speechSynthesis.paused) {
+        speechSynthesis.pause();
+        pauseBtn.style.display = "none";
+        resumeBtn.style.display = "inline-block";
+      }
+    });
+
+    resumeBtn.addEventListener("click", () => {
+      if (speechSynthesis.paused) {
+        speechSynthesis.resume();
+        resumeBtn.style.display = "none";
+        pauseBtn.style.display = "inline-block";
+      }
+    });
+
+    stopBtn.addEventListener("click", () => {
+      speechSynthesis.cancel();
+      ttsBtn.disabled = false;
+      ttsBtn.textContent = "🔊 Listen to Summary";
+      pauseBtn.style.display = resumeBtn.style.display = stopBtn.style.display = "none";
     });
 
     downloadBtn.addEventListener("click", () => {
@@ -157,31 +199,54 @@
       const doc = new jsPDF();
       doc.setFontSize(18);
       doc.text("Summary", 10, 20);
-
       doc.setFontSize(12);
       const summaryLines = doc.splitTextToSize(currentSummaryData.summary, 180);
       doc.text(summaryLines, 10, 30);
-
-      let currentY = 30 + summaryLines.length * 7 + 10;
+      let y = 30 + summaryLines.length * 7 + 10;
 
       doc.setFontSize(16);
-      doc.text("Important Clauses", 10, currentY);
-      currentY += 10;
-      doc.setFontSize(12);
+      doc.text("Important Clauses", 10, y);
+      y += 10;
 
+      doc.setFontSize(12);
       for (const [key, value] of Object.entries(currentSummaryData.clauses)) {
         const clauseText = `${key}: ${value.join("; ")}`;
         const lines = doc.splitTextToSize(clauseText, 180);
-        if (currentY + lines.length * 7 > 280) {
+        if (y + lines.length * 7 > 280) {
           doc.addPage();
-          currentY = 20;
+          y = 20;
         }
-        doc.text(lines, 10, currentY);
-        currentY += lines.length * 7 + 5;
+        doc.text(lines, 10, y);
+        y += lines.length * 7 + 5;
       }
 
       doc.save("summary.pdf");
     });
+
+    function toggleTheme() {
+      const html = document.getElementById("html");
+      const isDark = html.classList.contains("dark");
+      html.classList.toggle("dark", !isDark);
+      localStorage.setItem("theme", isDark ? "light" : "dark");
+    }
+
+    window.onload = () => {
+      const userTheme = localStorage.getItem("theme");
+      const hour = new Date().getHours();
+      if (userTheme) {
+        document.getElementById("html").classList.toggle("dark", userTheme === "dark");
+      } else {
+        document.getElementById("html").classList.toggle("dark", !(hour >= 6 && hour < 18));
+      }
+
+      const funFacts = [
+        "📜 The first legal code was created in Mesopotamia around 2100 BCE.",
+        "⚖️ The word 'jurisprudence' comes from Latin: 'juris' (law) and 'prudentia' (knowledge).",
+        "👩‍⚖️ India’s Constitution is the longest written constitution of any country.",
+        "📚 In 1950, the Indian Supreme Court replaced the Federal Court of India.",
+      ];
+      document.getElementById("funFact").textContent = funFacts[Math.floor(Math.random() * funFacts.length)];
+    };
   </script>
 </body>
 </html>

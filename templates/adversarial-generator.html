@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" id="html">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -9,6 +9,7 @@
   <script src="https://cdn.tailwindcss.com"></script>
   <script>
     tailwind.config = {
+      darkMode: 'class',
       theme: {
         extend: {
           fontFamily: {
@@ -26,18 +27,16 @@
     };
   </script>
 
-  <!-- Pixel Font -->
-  <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
-
-  <!-- FontAwesome -->
+  <!-- Font and Icons -->
+  <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css" crossorigin="anonymous" />
 
+  <!-- Custom Styles -->
   <style>
     body {
-      background-color: #192819;
-      color: #f5f1e3;
       font-family: 'Press Start 2P', monospace;
       font-size: 10px;
+      transition: background-color 0.3s, color 0.3s;
     }
 
     .neon-text {
@@ -60,9 +59,18 @@
   </style>
 </head>
 
-<body class="flex flex-col min-h-screen bg-darkgreen text-beige font-pixel tracking-tighter">
+<body class="flex flex-col min-h-screen bg-darkgreen text-beige font-pixel tracking-tighter dark:bg-white dark:text-black">
+
+  <!-- Toggle & TTS -->
+  <div class="fixed top-4 right-6 z-50 flex gap-2">
+    <button onclick="toggleTheme()" class="bg-neon text-dark px-2 py-1 rounded pixel-border font-bold text-xs">🌓 Toggle</button>
+    <button onclick="speakOutput()" class="bg-neon text-dark px-2 py-1 rounded pixel-border font-bold text-xs">🔊 Listen</button>
+  </div>
+
   <main class="flex-grow container mx-auto px-6 py-12 max-w-4xl">
-    <section class="bg-gradient-to-br from-accentgreen to-darkgreen rounded-3xl p-10 shadow-2xl pixel-border">
+    <section class="bg-gradient-to-br from-accentgreen to-darkgreen dark:from-white dark:to-beige rounded-3xl p-10 shadow-2xl pixel-border">
+
+      <!-- Header -->
       <div class="flex items-center space-x-4 mb-6">
         <div class="w-16 h-16 bg-beige text-darkgreen rounded-full flex items-center justify-center text-2xl neon-text">
           <i class="fas fa-balance-scale"></i>
@@ -70,31 +78,37 @@
         <h1 class="text-lg sm:text-xl font-bold neon-text uppercase glow-hover">Adversarial Generator</h1>
       </div>
 
-      <p class="mb-6 text-beige/80 text-xs">
+      <!-- Fun Fact -->
+      <div id="funFact" class="text-xs mb-6 text-neon font-bold"></div>
+
+      <!-- Description -->
+      <p class="mb-6 text-beige/80 text-xs dark:text-black">
         Input your legal case and get both Prosecution and Defense perspectives powered by AI.
       </p>
 
       <!-- Input Box -->
-      <textarea id="caseInput" rows="6" placeholder="Enter case description..." class="w-full p-4 rounded-lg text-darkgreen bg-beige/90 text-xs pixel-border mb-4"></textarea>
+      <textarea id="caseInput" rows="6" placeholder="Enter case description..." class="w-full p-4 rounded-lg text-darkgreen bg-beige/90 text-xs pixel-border mb-4 dark:text-black dark:bg-white"></textarea>
 
       <!-- Button -->
       <button onclick="generateArguments()" class="bg-neon text-darkgreen px-6 py-2 rounded hover:bg-opacity-80 font-bold glow-hover">
         ⚔️ Generate Arguments
       </button>
 
-      <!-- Output Box -->
-      <div id="output" class="mt-8 p-6 bg-beige/10 rounded-lg text-beige border border-neon font-pixel text-xs min-h-[120px] whitespace-pre-line">
-        <p class="italic text-center text-beige/70">Your adversarial arguments will appear here.</p>
+      <!-- Output -->
+      <div id="output" class="mt-8 p-6 bg-beige/10 rounded-lg text-beige border border-neon font-pixel text-xs min-h-[120px] whitespace-pre-line dark:text-black dark:bg-gray-100">
+        <p class="italic text-center text-beige/70 dark:text-gray-500">Your adversarial arguments will appear here.</p>
       </div>
     </section>
   </main>
 
   <!-- Footer -->
-  <footer class="bg-darkgreen text-beige border-t border-beige px-6 py-8 mt-12 text-center text-xs">
+  <footer class="bg-darkgreen dark:bg-pixelgray text-beige dark:text-white border-t border-beige px-6 py-8 mt-12 text-center text-xs">
     © 2025 LegalHawk. All rights reserved.
   </footer>
 
+  <!-- Scripts -->
   <script>
+    // Argument Generator
     async function generateArguments() {
       const caseText = document.getElementById("caseInput").value;
       const output = document.getElementById("output");
@@ -112,6 +126,46 @@
       } catch (error) {
         output.innerHTML = "❌ Error: " + error;
       }
+    }
+
+    // Fun Fact
+    const funFacts = [
+      "⚖️ Article 39A promotes equal justice and free legal aid.",
+      "🧠 AI can simulate both sides of courtroom arguments!",
+      "📜 Right to Counsel is a cornerstone of fair trials.",
+      "🔍 The Indian Evidence Act dates back to 1872!",
+      "🧩 In adversarial law, both sides argue before a neutral judge."
+    ];
+    document.getElementById("funFact").textContent = funFacts[Math.floor(Math.random() * funFacts.length)];
+
+    // Toggle Theme
+    function toggleTheme() {
+      const html = document.getElementById("html");
+      const isDark = html.classList.contains("dark");
+      html.classList.toggle("dark", !isDark);
+      localStorage.setItem("theme", isDark ? "light" : "dark");
+    }
+
+    // Auto Theme by Time (6PM–6AM)
+    window.onload = () => {
+      const html = document.getElementById("html");
+      const saved = localStorage.getItem("theme");
+      const hour = new Date().getHours();
+      if (saved === 'dark' || (!saved && (hour >= 18 || hour < 6))) {
+        html.classList.add("dark");
+      } else {
+        html.classList.remove("dark");
+      }
+    };
+
+    // Text-to-Speech
+    function speakOutput() {
+      const outputText = document.getElementById("output").innerText;
+      if (!outputText || outputText.includes("Your adversarial arguments will appear here.")) return;
+
+      const utterance = new SpeechSynthesisUtterance(outputText);
+      utterance.lang = "en-IN";
+      window.speechSynthesis.speak(utterance);
     }
   </script>
 </body>

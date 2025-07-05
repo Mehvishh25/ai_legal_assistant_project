@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" id="html">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -9,6 +9,7 @@
   <script src="https://cdn.tailwindcss.com"></script>
   <script>
     tailwind.config = {
+      darkMode: 'class',
       theme: {
         extend: {
           fontFamily: {
@@ -20,6 +21,8 @@
             accentgreen: '#2F5D50',
             neon: '#00FFB2',
             pixelgray: '#1F1F1F',
+            light: '#f5f5f5',
+            dark: '#1a1a1a'
           },
         },
       },
@@ -34,37 +37,37 @@
 
   <style>
     body {
-      background-color: #192819;
-      color: #f5f1e3;
       font-family: 'Press Start 2P', monospace;
       font-size: 10px;
+      transition: background-color 0.3s, color 0.3s;
     }
-
-    .neon-text {
-      color: #00FFB2;
-      text-shadow: 0 0 6px #00FFB2;
-    }
-
-    .glow-hover:hover {
-      text-shadow: 0 0 10px #00FFB2, 0 0 20px #00FFB2;
-    }
-
-    .pixel-border {
-      border: 3px solid #00FFB2;
-      box-shadow: 4px 4px 0 #000;
-    }
-
-    a.article-link:hover {
-      text-decoration: underline;
+    .neon-text { color: #00FFB2; text-shadow: 0 0 6px #00FFB2; }
+    .glow-hover:hover { text-shadow: 0 0 10px #00FFB2, 0 0 20px #00FFB2; }
+    .pixel-border { border: 3px solid #00FFB2; box-shadow: 4px 4px 0 #000; }
+    .article-link:hover { text-decoration: underline; }
+    .tts-btn {
+      background-color: #00FFB2;
+      color: #192819;
+      font-weight: bold;
+      font-size: 8px;
+      padding: 4px 8px;
+      margin-top: 6px;
+      border-radius: 4px;
     }
   </style>
 </head>
 
-<body class="flex flex-col min-h-screen bg-darkgreen text-beige font-pixel tracking-tighter">
+<body class="bg-darkgreen text-beige flex flex-col min-h-screen tracking-tight">
 
-  <!-- Main Content -->
+  <!-- Theme Toggle -->
+  <div class="fixed top-4 right-6 z-50">
+    <button onclick="toggleTheme()" class="bg-neon text-dark px-2 py-1 rounded pixel-border font-bold text-xs">🌓 Toggle</button>
+  </div>
+
+  <!-- Main -->
   <main class="flex-grow container mx-auto px-6 py-12 max-w-5xl">
-    <section class="bg-gradient-to-br from-accentgreen to-darkgreen rounded-3xl p-10 shadow-2xl pixel-border">
+    <section class="rounded-3xl p-10 shadow-2xl pixel-border bg-gradient-to-br from-accentgreen to-darkgreen dark:from-light dark:to-white">
+      <!-- Header -->
       <div class="flex items-center space-x-4 mb-6">
         <div class="w-16 h-16 bg-beige text-darkgreen rounded-full flex items-center justify-center text-2xl neon-text">
           <i class="fas fa-newspaper"></i>
@@ -72,24 +75,28 @@
         <h1 class="text-lg sm:text-xl font-bold neon-text uppercase glow-hover">Latest Legal News</h1>
       </div>
 
-      <p class="mb-8 text-beige/90 leading-relaxed text-xs">
+      <!-- Fun Fact -->
+      <div id="funFact" class="text-xs mb-6 text-neon font-bold"></div>
+
+      <p class="mb-8 text-beige/90 leading-relaxed text-xs dark:text-dark">
         Curated real-time legal updates from top global and Indian news sources.
       </p>
 
-      <!-- News List -->
+      <!-- Articles -->
       <div class="space-y-8">
         {% if articles %}
           {% for article in articles %}
-          <div class="border border-neon rounded-lg p-4 pixel-border bg-darkgreen hover:bg-accentgreen transition-all">
-            <a href="{{ article.url }}" target="_blank" class="article-link text-sm font-bold neon-text block glow-hover mb-2">
-              📰 {{ article.title }}
-            </a>
-            <p class="text-beige/80 mb-2">{{ article.description }}</p>
-            <div class="text-[8px] text-beige/60">
-              <strong>Source:</strong> {{ article.source.name }} &nbsp;|&nbsp;
-              <strong>Published:</strong> {{ article.publishedAt[:10] }}
+            <div class="border border-neon rounded-lg p-4 pixel-border bg-darkgreen hover:bg-accentgreen dark:bg-light dark:hover:bg-white transition-all">
+              <a href="{{ article.url }}" target="_blank" class="article-link text-sm font-bold neon-text block glow-hover mb-2">
+                📰 {{ article.title }}
+              </a>
+              <p id="desc-{{ loop.index }}" class="text-beige/80 dark:text-black mb-2">{{ article.description }}</p>
+              <button class="tts-btn" onclick="speakText('desc-{{ loop.index }}')">🔊 Listen</button>
+              <div class="text-[8px] text-beige/60 dark:text-black/60 mt-2">
+                <strong>Source:</strong> {{ article.source.name }} &nbsp;|&nbsp;
+                <strong>Published:</strong> {{ article.publishedAt[:10] }}
+              </div>
             </div>
-          </div>
           {% endfor %}
         {% else %}
           <p class="text-center italic text-beige/60">No news articles found. Try again later.</p>
@@ -99,9 +106,52 @@
   </main>
 
   <!-- Footer -->
-  <footer class="bg-darkgreen text-beige border-t border-beige px-6 py-8 mt-12 text-center text-xs">
+  <footer class="bg-darkgreen text-beige border-t border-beige px-6 py-8 mt-12 text-center text-xs dark:bg-white dark:text-black">
     © 2025 LegalHawk. All rights reserved.
   </footer>
 
+  <!-- Scripts -->
+  <script>
+    const funFacts = [
+      "📜 The first written laws date back to 2100 BCE in ancient Mesopotamia.",
+      "⚖️ The term 'plaintiff' comes from the French word 'plaintif' meaning 'complaining'.",
+      "👩‍⚖️ The Indian Supreme Court was established on 28 January 1950.",
+      "🔍 The term ‘lawyer’ appeared in English as early as 1377!"
+    ];
+
+    document.getElementById('funFact').textContent = funFacts[Math.floor(Math.random() * funFacts.length)];
+
+    function toggleTheme() {
+      const html = document.getElementById("html");
+      const isDark = html.classList.contains("dark");
+      html.classList.toggle("dark", !isDark);
+      localStorage.setItem("theme", isDark ? "light" : "dark");
+    }
+
+    // Auto theme on load
+    window.onload = () => {
+      const hour = new Date().getHours();
+      const userTheme = localStorage.getItem("theme");
+      if (userTheme) {
+        document.getElementById("html").classList.toggle("dark", userTheme === "dark");
+      } else {
+        document.getElementById("html").classList.toggle("dark", !(hour >= 6 && hour < 18));
+      }
+    };
+
+    // TTS Function
+    function speakText(id) {
+      const el = document.getElementById(id);
+      if (!el || !el.textContent) return;
+
+      const utterance = new SpeechSynthesisUtterance(el.textContent);
+      utterance.lang = "en-US";
+      utterance.pitch = 1;
+      utterance.rate = 1;
+
+      speechSynthesis.cancel();
+      speechSynthesis.speak(utterance);
+    }
+  </script>
 </body>
 </html>

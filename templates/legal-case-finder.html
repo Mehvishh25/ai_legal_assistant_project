@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" id="html">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -9,6 +9,7 @@
   <script src="https://cdn.tailwindcss.com"></script>
   <script>
     tailwind.config = {
+      darkMode: 'class',
       theme: {
         extend: {
           fontFamily: {
@@ -26,24 +27,17 @@
     };
   </script>
 
-  <!-- Google Fonts: Pixel Font -->
+  <!-- Fonts & Icons -->
   <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css" crossorigin="anonymous" />
 
-  <!-- FontAwesome -->
-  <link
-    rel="stylesheet"
-    href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css"
-    crossorigin="anonymous"
-  />
-
-  <!-- Custom Style -->
+  <!-- Style -->
   <style>
     body {
-      background-color: #192819;
-      color: #F5F1E3;
       font-family: 'Press Start 2P', monospace;
       font-size: 10px;
       scroll-behavior: smooth;
+      transition: background-color 0.3s, color 0.3s;
     }
 
     .pixel-border {
@@ -68,9 +62,16 @@
 
 <body class="flex flex-col min-h-screen bg-darkgreen text-beige font-pixel">
 
+  <!-- Toggle & Voice Buttons -->
+  <div class="fixed top-4 right-6 z-50 flex gap-2">
+    <button onclick="toggleTheme()" class="bg-neon text-dark px-2 py-1 rounded pixel-border font-bold text-xs">🌓 Toggle</button>
+    <button onclick="toggleTTS()" class="bg-neon text-dark px-2 py-1 rounded pixel-border font-bold text-xs">🔊 TTS</button>
+  </div>
+
   <!-- Main Content -->
   <main class="flex-grow container mx-auto px-6 py-12 max-w-5xl">
-    <section class="bg-pixelgray rounded-3xl p-10 shadow-xl pixel-border">
+    <section class="bg-pixelgray dark:bg-beige dark:text-darkgreen rounded-3xl p-10 shadow-xl pixel-border">
+
       <!-- Header -->
       <div class="flex items-center space-x-4 mb-6">
         <div class="w-16 h-16 bg-beige text-darkgreen rounded-full flex items-center justify-center text-2xl neon-text">
@@ -79,28 +80,25 @@
         <h1 class="text-base sm:text-lg font-extrabold uppercase neon-text glow-hover">Legal Case Finder</h1>
       </div>
 
+      <!-- Fun Fact -->
+      <div id="funFact" class="text-xs mb-6 text-neon font-bold"></div>
+
       <!-- Description -->
-      <p class="mb-8 text-beige/90 leading-relaxed text-xs">
+      <p class="mb-8 text-beige/90 dark:text-darkgreen leading-relaxed text-xs">
         Enter a legal topic like <strong>Article 21</strong> or <strong>Property Dispute</strong>, and get instant access to related judgments, citations, and legal documents powered by AI.
       </p>
 
-      <!-- Search Input -->
+      <!-- Search -->
       <div class="flex flex-col sm:flex-row gap-3 mb-6">
-        <input
-          id="keywordInput"
-          type="text"
-          placeholder="Type your legal topic..."
-          class="flex-1 px-4 py-3 rounded-md bg-accentgreen text-beige placeholder-beige/70 border border-beige/50 focus:outline-none focus:ring-2 focus:ring-neon font-pixel"
-        />
-        <button
-          id="searchBtn"
-          class="bg-neon text-darkgreen font-bold px-6 py-3 rounded-md hover:bg-opacity-90 glow-hover transition-all font-pixel"
-        >
+        <input id="keywordInput" type="text" placeholder="Type your legal topic..."
+          class="flex-1 px-4 py-3 rounded-md bg-accentgreen text-beige placeholder-beige/70 border border-beige/50 focus:outline-none focus:ring-2 focus:ring-neon font-pixel" />
+        <button id="searchBtn"
+          class="bg-neon text-darkgreen font-bold px-6 py-3 rounded-md hover:bg-opacity-90 glow-hover transition-all font-pixel">
           <i class="fas fa-search mr-2"></i> Search
         </button>
       </div>
 
-      <!-- Status Text -->
+      <!-- Status -->
       <div id="statusText" class="mb-4 hidden text-xs text-neon">
         🔍 Searching for: '<span id="queryText" class="font-semibold neon-text"></span>'...
       </div>
@@ -111,19 +109,19 @@
   </main>
 
   <!-- Footer -->
-  <footer class="bg-pixelgray text-beige border-t border-beige px-6 py-8 text-center text-xs">
+  <footer class="bg-pixelgray dark:bg-white dark:text-black text-beige border-t border-beige px-6 py-8 text-center text-xs">
     © 2025 Powered Legal Assistant. All rights reserved.
   </footer>
 
-  <!-- JavaScript -->
+  <!-- Scripts -->
   <script>
     const searchBtn = document.getElementById('searchBtn');
     const keywordInput = document.getElementById('keywordInput');
     const statusText = document.getElementById('statusText');
     const queryText = document.getElementById('queryText');
     const results = document.getElementById('results');
-
     let loadingSpinner;
+    let ttsEnabled = false;
 
     function showSpinner() {
       loadingSpinner = document.createElement('div');
@@ -152,23 +150,36 @@
       return btn;
     }
 
+    function speak(text) {
+      if (!ttsEnabled) return;
+      const utterance = new SpeechSynthesisUtterance(text);
+      utterance.lang = 'en-IN';
+      window.speechSynthesis.speak(utterance);
+    }
+
+    function toggleTTS() {
+      ttsEnabled = !ttsEnabled;
+      alert(`Text-to-Speech ${ttsEnabled ? 'enabled' : 'disabled'}`);
+    }
+
     function createCard(item, index) {
       const card = document.createElement("div");
-      card.className = "p-6 bg-darkgreen border border-beige/30 rounded-lg shadow-md text-beige/90 text-xs pixel-border";
+      card.className = "p-6 bg-darkgreen dark:bg-white border border-beige/30 rounded-lg shadow-md text-beige dark:text-black text-xs pixel-border";
 
-      const excerpt = item.excerpt ? `<div class="mt-3 text-green-200"><strong>📌 Excerpt:</strong><br>${item.excerpt}</div>` : "";
+      const excerpt = item.excerpt ? `<div class="mt-3 text-green-200 dark:text-green-900"><strong>📌 Excerpt:</strong><br>${item.excerpt}</div>` : "";
 
       card.innerHTML = `
         <div class="flex justify-between items-start mb-2">
           <h3 class="text-sm font-bold neon-text">📄 CASE #${index + 1}: ${item.title}</h3>
           <span class="text-[10px] bg-green-100 text-green-800 font-semibold px-2 py-1 rounded-full">${item.type}</span>
         </div>
-        <p class="text-green-200 mb-1">
-          🔗 <a href="${item.url}" target="_blank" class="underline hover:text-beige">Open Judgment</a>
+        <p class="text-green-200 dark:text-green-700 mb-1">
+          🔗 <a href="${item.url}" target="_blank" class="underline hover:text-beige dark:hover:text-black">Open Judgment</a>
         </p>
         <div class="flex items-center gap-3 mb-2">
           ${createCopyButton(item.url).outerHTML}
           <a href="${item.url}" target="_blank" class="text-[10px] bg-accentgreen text-beige px-2 py-1 rounded hover:bg-opacity-90 font-pixel">🌐 Open Full Case</a>
+          <button onclick="speak(\`${item.preview.replace(/`/g, "'")}\`)" class="text-[10px] bg-neon text-darkgreen px-2 py-1 rounded font-pixel hover:bg-opacity-90">🔊 Listen</button>
         </div>
         <div><strong>📝 Preview:</strong><br>${item.preview}</div>
         ${excerpt}
@@ -211,6 +222,35 @@
           console.error(err);
         });
     });
+
+    // Theme & Fun Fact
+    const funFacts = [
+      "📜 Article 21 ensures the Right to Life and Personal Liberty.",
+      "⚖️ Public Interest Litigations (PILs) empower citizens to fight injustice.",
+      "👩‍⚖️ The Indian Constitution was adopted on 26 November 1949.",
+      "🧠 AI is increasingly assisting in legal research and case prediction."
+    ];
+
+    document.getElementById("funFact").textContent = funFacts[Math.floor(Math.random() * funFacts.length)];
+
+    function toggleTheme() {
+      const html = document.getElementById("html");
+      const isDark = html.classList.contains("dark");
+      if (isDark) {
+        html.classList.remove("dark");
+        localStorage.setItem("theme", "light");
+      } else {
+        html.classList.add("dark");
+        localStorage.setItem("theme", "dark");
+      }
+    }
+
+    // Apply saved theme on load
+    window.onload = () => {
+      if (localStorage.getItem("theme") === "dark") {
+        document.getElementById("html").classList.add("dark");
+      }
+    };
   </script>
 </body>
 </html>

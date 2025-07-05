@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" id="html">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -9,6 +9,7 @@
   <script src="https://cdn.tailwindcss.com"></script>
   <script>
     tailwind.config = {
+      darkMode: 'class',
       theme: {
         extend: {
           fontFamily: {
@@ -19,61 +20,57 @@
             beige: '#F5F1E3',
             accentgreen: '#2F5D50',
             neon: '#00FFB2',
+            light: '#f5f5f5',
+            dark: '#1a1a1a'
           },
         },
       },
     };
   </script>
 
-  <!-- Pixel Font -->
+  <!-- Fonts and Icons -->
   <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
-
-  <!-- FontAwesome -->
-  <link
-    rel="stylesheet"
-    href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css"
-    crossorigin="anonymous"
-    referrerpolicy="no-referrer"
-  />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css" crossorigin="anonymous" />
 
   <!-- Custom Styles -->
   <style>
     body {
-      background-color: #192819;
-      color: #F5F1E3;
       font-family: 'Press Start 2P', monospace;
       font-size: 12px;
+      transition: background-color 0.3s, color 0.3s;
     }
-
     .pixel-border {
       border: 3px solid #00FFB2;
       box-shadow: 4px 4px 0 #000;
     }
-
     .neon-text {
       color: #00FFB2;
       text-shadow: 0 0 6px #00FFB2;
     }
-
     .glow-hover:hover {
       text-shadow: 0 0 10px #00FFB2, 0 0 20px #00FFB2;
     }
-
     .file-upload:hover {
       background-color: #F5F1E3;
       color: #192819;
     }
-
     input, button, textarea {
       font-family: 'Press Start 2P', monospace !important;
     }
   </style>
 </head>
 
-<body class="flex flex-col min-h-screen font-pixel tracking-tight">
+<body class="bg-darkgreen text-beige flex flex-col min-h-screen tracking-tight">
 
+  <!-- Theme Toggle -->
+  <div class="fixed top-4 right-6 z-50">
+    <button onclick="toggleTheme()" class="bg-neon text-dark px-2 py-1 rounded pixel-border font-bold text-xs">🌓 Toggle</button>
+  </div>
+
+  <!-- Main -->
   <main class="flex-grow container mx-auto px-6 py-12 max-w-4xl">
-    <section class="bg-gradient-to-br from-accentgreen to-darkgreen rounded-3xl p-10 shadow-2xl pixel-border">
+    <section class="rounded-3xl p-10 shadow-2xl pixel-border bg-gradient-to-br from-accentgreen to-darkgreen dark:from-light dark:to-white">
+      <!-- Header -->
       <div class="flex items-center space-x-4 mb-6">
         <div class="w-16 h-16 bg-beige text-darkgreen rounded-full flex items-center justify-center text-2xl neon-text">
           <i class="fas fa-file-pdf"></i>
@@ -81,7 +78,10 @@
         <h1 class="text-xl sm:text-2xl font-bold neon-text">PDF Q&A Chatbot</h1>
       </div>
 
-      <p class="mb-8 text-beige/90 leading-relaxed text-xs">
+      <!-- Fun Fact -->
+      <div id="funFact" class="text-xs mb-6 text-neon font-bold"></div>
+
+      <p class="mb-8 text-beige/90 leading-relaxed text-xs dark:text-dark">
         Upload your PDF and ask legal questions. Our AI will extract accurate context-aware responses from your file.
       </p>
 
@@ -89,55 +89,126 @@
       <form id="pdfQAForm" class="space-y-6" enctype="multipart/form-data">
         <div>
           <label for="qa-file" class="block mb-2 font-semibold neon-text">Upload PDF File</label>
-          <input
-            id="qa-file"
-            name="file"
-            type="file"
-            accept=".pdf"
-            required
-            class="border rounded px-4 py-2 w-full text-darkgreen bg-beige file-upload transition-all duration-300"
-          />
+          <input id="qa-file" name="file" type="file" accept=".pdf" required class="border rounded px-4 py-2 w-full text-darkgreen bg-beige file-upload transition-all duration-300" />
         </div>
 
         <div>
           <label for="question" class="block mb-2 font-semibold neon-text">Your Question</label>
-          <input
-            id="question"
-            name="question"
-            type="text"
-            required
-            placeholder="Enter your question"
-            class="border rounded px-4 py-2 w-full text-darkgreen bg-beige file-upload transition-all duration-300"
-          />
+          <input id="question" name="question" type="text" required placeholder="Enter your question" class="border rounded px-4 py-2 w-full text-darkgreen bg-beige file-upload transition-all duration-300" />
         </div>
 
-        <button
-          type="submit"
-          class="bg-neon text-darkgreen font-bold py-3 px-6 rounded hover:bg-opacity-80 transition-all glow-hover"
-        >
-          Get Answer
-        </button>
+        <button type="submit" class="bg-neon text-darkgreen font-bold py-3 px-6 rounded hover:bg-opacity-80 transition-all glow-hover">Get Answer</button>
       </form>
 
-      <!-- Output Area -->
-      <div
-        id="chatbot-output"
-        class="mt-8 p-6 bg-beige/10 rounded-lg min-h-[140px] text-beige border border-neon whitespace-pre-line"
-      >
-        <p class="italic text-center text-beige/80">Ask questions and see answers here.</p>
+      <!-- Output -->
+      <div id="chatbot-output" class="mt-8 p-6 bg-beige/10 rounded-lg min-h-[140px] text-beige border border-neon whitespace-pre-line dark:text-dark">
+        <p class="italic text-center text-beige/80 dark:text-dark/60">Ask questions and see answers here.</p>
       </div>
     </section>
   </main>
 
-  <footer class="bg-darkgreen text-beige border-t border-beige px-6 py-8 mt-12 text-center text-xs">
+  <!-- Footer -->
+  <footer class="bg-darkgreen text-beige border-t border-beige px-6 py-8 mt-12 text-center text-xs dark:bg-white dark:text-black">
     © 2025 LegalHawk. All rights reserved.
   </footer>
 
-  <!-- JS: PDF QA Handling -->
+  <!-- Scripts -->
   <script>
+    const funFacts = [
+      "📜 The first written laws date back to 2100 BCE in ancient Mesopotamia.",
+      "⚖️ The term 'plaintiff' comes from the French word 'plaintif' meaning 'complaining'.",
+      "👩‍⚖️ The Indian Supreme Court was established on 28 January 1950.",
+      "📚 In 1780, India’s first law commission was formed by Warren Hastings.",
+      "🔍 The term ‘lawyer’ appeared in English as early as 1377!"
+    ];
+
+    document.getElementById('funFact').textContent = funFacts[Math.floor(Math.random() * funFacts.length)];
+
+    function toggleTheme() {
+      const html = document.getElementById("html");
+      const isDark = html.classList.contains("dark");
+      html.classList.toggle("dark", !isDark);
+      localStorage.setItem("theme", isDark ? "light" : "dark");
+    }
+
+    window.onload = () => {
+      const userTheme = localStorage.getItem("theme");
+      const hour = new Date().getHours();
+      if (userTheme) {
+        document.getElementById("html").classList.toggle("dark", userTheme === "dark");
+      } else {
+        document.getElementById("html").classList.toggle("dark", !(hour >= 6 && hour < 18));
+      }
+    };
+
+    // TTS Functionality
+    let currentUtterance = null;
+
+    function setupTTSControls(answerText) {
+      const controlsHTML = `
+        <div class="flex gap-3 mt-4 flex-wrap">
+          <button id="tts-btn" class="px-4 py-2 bg-neon text-darkgreen rounded font-bold">🔊 Listen</button>
+          <button id="pause-btn" style="display:none;" class="px-4 py-2 bg-yellow-300 text-darkgreen rounded font-bold">⏸️ Pause</button>
+          <button id="resume-btn" style="display:none;" class="px-4 py-2 bg-green-300 text-darkgreen rounded font-bold">▶️ Resume</button>
+          <button id="stop-btn" style="display:none;" class="px-4 py-2 bg-red-400 text-darkgreen rounded font-bold">⏹️ Stop</button>
+        </div>
+      `;
+      document.getElementById("chatbot-output").insertAdjacentHTML("beforeend", controlsHTML);
+
+      document.getElementById("tts-btn").onclick = () => {
+        if (!answerText) return;
+        const utterance = new SpeechSynthesisUtterance(answerText);
+        utterance.lang = "en-US";
+        utterance.pitch = 1;
+        utterance.rate = 1;
+        currentUtterance = utterance;
+
+        document.getElementById("tts-btn").disabled = true;
+        document.getElementById("tts-btn").textContent = "🔊 Playing...";
+        document.getElementById("pause-btn").style.display = "inline-block";
+        document.getElementById("stop-btn").style.display = "inline-block";
+
+        utterance.onend = () => {
+          document.getElementById("tts-btn").disabled = false;
+          document.getElementById("tts-btn").textContent = "🔊 Listen";
+          document.getElementById("pause-btn").style.display = "none";
+          document.getElementById("resume-btn").style.display = "none";
+          document.getElementById("stop-btn").style.display = "none";
+        };
+
+        speechSynthesis.cancel();
+        speechSynthesis.speak(utterance);
+      };
+
+      document.getElementById("pause-btn").onclick = () => {
+        if (speechSynthesis.speaking && !speechSynthesis.paused) {
+          speechSynthesis.pause();
+          document.getElementById("pause-btn").style.display = "none";
+          document.getElementById("resume-btn").style.display = "inline-block";
+        }
+      };
+
+      document.getElementById("resume-btn").onclick = () => {
+        if (speechSynthesis.paused) {
+          speechSynthesis.resume();
+          document.getElementById("resume-btn").style.display = "none";
+          document.getElementById("pause-btn").style.display = "inline-block";
+        }
+      };
+
+      document.getElementById("stop-btn").onclick = () => {
+        speechSynthesis.cancel();
+        document.getElementById("tts-btn").disabled = false;
+        document.getElementById("tts-btn").textContent = "🔊 Listen";
+        document.getElementById("pause-btn").style.display = "none";
+        document.getElementById("resume-btn").style.display = "none";
+        document.getElementById("stop-btn").style.display = "none";
+      };
+    }
+
+    // Form Submission
     document.getElementById("pdfQAForm").addEventListener("submit", async function (e) {
       e.preventDefault();
-
       const output = document.getElementById("chatbot-output");
       output.innerHTML = `<p class="italic text-center">Processing your request...</p>`;
 
@@ -154,6 +225,7 @@
 
         if (data.answer) {
           output.innerHTML = `<p class="whitespace-pre-line">${data.answer}</p>`;
+          setupTTSControls(data.answer);
         } else {
           output.innerHTML = `<p class="text-red-400">Error: ${data.error || "Unknown error."}</p>`;
         }

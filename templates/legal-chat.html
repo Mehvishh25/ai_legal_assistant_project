@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" class="dark">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -9,6 +9,7 @@
   <script src="https://cdn.tailwindcss.com"></script>
   <script>
     tailwind.config = {
+      darkMode: 'class',
       theme: {
         extend: {
           fontFamily: {
@@ -26,16 +27,11 @@
     };
   </script>
 
-  <!-- Pixel Font -->
   <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet" />
-
-  <!-- FontAwesome -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css" crossorigin="anonymous" />
 
   <style>
     body {
-      background-color: #192819;
-      color: #f5f1e3;
       font-family: 'Press Start 2P', monospace;
       font-size: 10px;
       min-height: 100vh;
@@ -56,14 +52,11 @@
     }
 
     #chat-container {
-      background: #2f5d50;
       border-radius: 1rem;
       padding: 1rem;
       max-height: 400px;
       overflow-y: auto;
       box-shadow: 0 8px 15px rgba(0, 0, 0, 0.4);
-      font-family: 'Press Start 2P', monospace;
-      font-size: 10px;
     }
 
     .message {
@@ -96,7 +89,6 @@
       padding: 0.75rem 1rem;
       font-size: 10px;
       outline: none;
-      font-family: 'Press Start 2P', monospace;
       background-color: #f5f1e3;
       color: #192819;
     }
@@ -110,7 +102,6 @@
       cursor: pointer;
       transition: background-color 0.3s ease;
       border: none;
-      font-family: 'Press Start 2P', monospace;
     }
 
     #send-btn:hover {
@@ -123,45 +114,47 @@
   </style>
 </head>
 
-<body class="flex flex-col min-h-screen bg-darkgreen text-beige font-pixel">
+<body class="flex flex-col min-h-screen bg-darkgreen text-beige dark:bg-beige dark:text-darkgreen transition-colors">
+  <!-- 🔘 Toggle Theme Button -->
+  <div class="flex justify-end p-4">
+    <button id="theme-toggle" class="text-xs bg-pixelgray text-neon dark:bg-darkgreen dark:text-neon px-3 py-2 rounded pixel-border glow-hover">
+      🌗 Toggle Mode
+    </button>
+  </div>
 
-  <main class="flex-grow container mx-auto px-6 py-12 max-w-4xl">
-    <section class="bg-gradient-to-br from-accentgreen to-darkgreen rounded-3xl p-8 shadow-2xl pixel-border flex flex-col">
+  <main class="flex-grow container mx-auto px-6 py-4 max-w-4xl">
+    <section class="bg-gradient-to-br from-accentgreen to-darkgreen dark:from-beige dark:to-pixelgray rounded-3xl p-8 shadow-2xl pixel-border flex flex-col">
       <div class="flex items-center space-x-4 mb-6">
-        <div class="w-16 h-16 bg-beige text-darkgreen rounded-full flex items-center justify-center text-2xl neon-text">
+        <div class="w-16 h-16 bg-beige text-darkgreen rounded-full flex items-center justify-center text-2xl neon-text dark:bg-darkgreen dark:text-beige">
           <i class="fas fa-comments"></i>
         </div>
         <h1 class="text-sm sm:text-base font-bold neon-text uppercase glow-hover">General Legal Chatbot</h1>
       </div>
 
-      <p class="mb-6 text-beige/90 leading-relaxed text-xs">
+      <p class="mb-6 leading-relaxed text-xs">
         Ask legal questions tailored for individuals, startups, or small businesses. Our AI gives instant legal insights.
       </p>
 
       <!-- Chat box -->
-      <div id="chat-container" class="flex-grow overflow-auto mb-4 pixel-border"></div>
+      <div id="chat-container" class="flex-grow overflow-auto mb-4 pixel-border bg-accentgreen dark:bg-pixelgray"></div>
 
       <!-- Input area -->
       <form id="chat-form" class="flex gap-3 mt-4" onsubmit="return false;">
-        <input
-          id="chat-input"
-          type="text"
-          placeholder="Type your message..."
-          class="text-darkgreen"
-          autocomplete="off"
-        />
-        <button
-          type="submit"
-          id="send-btn"
-          class="glow-hover"
-        >
-          Send
-        </button>
+        <input id="chat-input" type="text" placeholder="Type your message..." autocomplete="off" />
+        <button type="submit" id="send-btn" class="glow-hover">Send</button>
       </form>
+
+      <!-- TTS Buttons -->
+      <div class="flex gap-3 mt-4">
+        <button id="ttsBtn" style="display:none" class="bg-neon text-darkgreen px-3 py-2 rounded font-bold">🔊 Listen</button>
+        <button id="pauseBtn" style="display:none" class="bg-yellow-300 text-darkgreen px-3 py-2 rounded font-bold">⏸️ Pause</button>
+        <button id="resumeBtn" style="display:none" class="bg-green-300 text-darkgreen px-3 py-2 rounded font-bold">▶️ Resume</button>
+        <button id="stopBtn" style="display:none" class="bg-red-400 text-darkgreen px-3 py-2 rounded font-bold">⏹️ Stop</button>
+      </div>
     </section>
   </main>
 
-  <footer class="bg-darkgreen text-beige border-t border-beige px-6 py-8 mt-12 text-center text-xs">
+  <footer class="bg-darkgreen text-beige dark:bg-pixelgray dark:text-beige border-t border-beige px-6 py-6 text-center text-xs">
     © 2025 Powered Legal Assistant. All rights reserved.
   </footer>
 
@@ -169,6 +162,11 @@
     const chatContainer = document.getElementById('chat-container');
     const chatForm = document.getElementById('chat-form');
     const chatInput = document.getElementById('chat-input');
+
+    const funFacts = [
+      "📜 India's Constitution is the longest in the world!",
+      "👥 You can file a PIL even if you're not directly affected!"
+    ];
 
     chatForm.addEventListener('submit', async () => {
       const userMessage = chatInput.value.trim();
@@ -178,7 +176,8 @@
       chatInput.value = '';
       chatInput.focus();
 
-      appendMessage("⌛ Thinking...", 'bot-message');
+      const randomFact = funFacts[Math.floor(Math.random() * funFacts.length)];
+      appendMessage(`⌛ Thinking...\n💡 ${randomFact}`, 'bot-message');
 
       const response = await fetch("/chat", {
         method: "POST",
@@ -191,7 +190,7 @@
 
       const data = await response.json();
       const allBotMsgs = chatContainer.querySelectorAll(".bot-message");
-      allBotMsgs[allBotMsgs.length - 1].remove(); // Remove "Thinking..." message
+      allBotMsgs[allBotMsgs.length - 1].remove();
 
       appendMessage(data.answer || "❌ Sorry, no response received.", 'bot-message');
     });
@@ -202,7 +201,85 @@
       msgDiv.textContent = text;
       chatContainer.appendChild(msgDiv);
       chatContainer.scrollTop = chatContainer.scrollHeight;
+
+      if (className === 'bot-message') {
+        ttsBtn.style.display = 'inline-block';
+      }
     }
+
+    // 🌗 Persistent Theme
+    const toggleBtn = document.getElementById('theme-toggle');
+    toggleBtn.addEventListener('click', () => {
+      const html = document.documentElement;
+      const isDark = html.classList.contains('dark');
+      html.classList.toggle('dark', !isDark);
+      localStorage.setItem('theme', isDark ? 'light' : 'dark');
+    });
+
+    window.onload = () => {
+      const html = document.documentElement;
+      const storedTheme = localStorage.getItem("theme");
+      if (storedTheme) {
+        html.classList.toggle("dark", storedTheme === "dark");
+      } else {
+        const hour = new Date().getHours();
+        html.classList.toggle("dark", !(hour >= 6 && hour < 18));
+      }
+    };
+
+    // 🔊 TTS
+    const ttsBtn = document.getElementById("ttsBtn");
+    const pauseBtn = document.getElementById("pauseBtn");
+    const resumeBtn = document.getElementById("resumeBtn");
+    const stopBtn = document.getElementById("stopBtn");
+    let currentUtterance = null;
+
+    ttsBtn.addEventListener("click", () => {
+      const lastMsg = [...chatContainer.querySelectorAll(".bot-message")].pop();
+      if (!lastMsg) return;
+      const text = lastMsg.textContent.trim();
+      if (!text) return;
+
+      const utterance = new SpeechSynthesisUtterance(text);
+      utterance.lang = "en-US";
+      utterance.pitch = 1;
+      utterance.rate = 1;
+
+      currentUtterance = utterance;
+      ttsBtn.disabled = true;
+      pauseBtn.style.display = stopBtn.style.display = "inline-block";
+      resumeBtn.style.display = "none";
+
+      utterance.onend = () => {
+        ttsBtn.disabled = false;
+        pauseBtn.style.display = resumeBtn.style.display = stopBtn.style.display = "none";
+      };
+
+      speechSynthesis.cancel();
+      speechSynthesis.speak(utterance);
+    });
+
+    pauseBtn.addEventListener("click", () => {
+      if (speechSynthesis.speaking && !speechSynthesis.paused) {
+        speechSynthesis.pause();
+        pauseBtn.style.display = "none";
+        resumeBtn.style.display = "inline-block";
+      }
+    });
+
+    resumeBtn.addEventListener("click", () => {
+      if (speechSynthesis.paused) {
+        speechSynthesis.resume();
+        resumeBtn.style.display = "none";
+        pauseBtn.style.display = "inline-block";
+      }
+    });
+
+    stopBtn.addEventListener("click", () => {
+      speechSynthesis.cancel();
+      ttsBtn.disabled = false;
+      pauseBtn.style.display = resumeBtn.style.display = stopBtn.style.display = "none";
+    });
   </script>
 </body>
 </html>
