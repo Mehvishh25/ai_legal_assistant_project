@@ -1,3 +1,8 @@
+""For images of website , please go to assets folder , it has every image of website""
+
+
+
+
 # ⚖️ AI Legal Assistant
 
 A smart, AI-powered web application that simplifies legal information access. Users can upload legal PDFs to get concise summaries, ask questions about document content, and interact with a general-purpose legal chatbot. The tool also offers legal awareness through curated educational video content.
