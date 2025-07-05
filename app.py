@@ -7,6 +7,7 @@ from pdf_qa import pdfqa_bp
 from legal_drafter import drafter_bp
 from case_finder import case_finder_bp
 from adversarial_argument_generator import adversary_bp
+from news import news_bp
 import subprocess
 import os
 import sys
@@ -26,6 +27,8 @@ app.register_blueprint(pdfqa_bp)
 app.register_blueprint(drafter_bp)
 app.register_blueprint(case_finder_bp)
 app.register_blueprint(adversary_bp)
+app.register_blueprint(news_bp)
+
 
 # Global variable to track bot process
 bot_process = None
