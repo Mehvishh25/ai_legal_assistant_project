@@ -16,8 +16,9 @@
 | 🔍 **Case Finder** | Fetches case law and citations from Indian Kanoon. | 🟡 Medium |
 | 📰 **Legal News Aggregator** | Shows curated legal news from global & Indian sources. | 🟢 Easy |
 | 💬 **Telegram Bot Integration** | Use chatbot and document tools via Telegram. | 🟢 Easy |
+| 🌗 **Dark/Light Mode** | Toggle UI themes manually | 🟢 Easy |
 | 🌗 **Dark/Light Mode** | Toggle UI themes manually or auto-switch based on time of day. | 🟡 Medium |
-| 🔈 **Text-to-Speech (TTS)** | Listen to summaries and answers using browser voice. | 🟡 Medium |
+| 🔈 **Text-to-Speech (TTS)** | Listen to summaries and answers using browser voice. | 🔴 Hard |
 
 ---
 
@@ -40,6 +41,7 @@
 
 ## ✨ Fun Features
 
+- 🌗 **Dark/Light Mode Toggle** – Manual toggle
 - 🌗 **Dark/Light Mode Toggle** – Manual toggle + auto change based on time.
 - 🔈 **Text-to-Speech** – Audio playback of summaries and chatbot replies.
 - 🖼️ **Retro Neon Pixel UI** – Accessibility-focused and visually appealing.
