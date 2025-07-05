@@ -1,59 +1,66 @@
-""For images of website , please go to assets folder , it has every image of website""
+# ⚖️ LegalHawk – AI Legal Assistant
 
-
-
-
-# ⚖️ AI Legal Assistant
-
-A smart, AI-powered web application that simplifies legal information access. Users can upload legal PDFs to get concise summaries, ask questions about document content, and interact with a general-purpose legal chatbot. The tool also offers legal awareness through curated educational video content.
+**LegalHawk** is an all-in-one, AI-powered legal assistant that brings together document summarization, adversarial legal reasoning, contract drafting, legal Q&A, and real-time news — designed for individuals, startups, and legal professionals.
 
 ---
 
-## 🚀 Key Features
+## 🚀 Features & Difficulty Levels
 
-- 📄 **PDF Summarizer**  
-  Upload legal documents and receive clear summaries with key clauses highlighted (e.g., termination, liability, confidentiality).
-
-- ❓ **PDF-Based Q&A**  
-  Ask specific questions about an uploaded legal PDF and get direct, AI-generated answers.
-
-- 💬 **General Legal Chatbot**  
-  Get simple, understandable answers to basic legal queries through a conversational AI assistant.
-
-- 🎥 **Legal Awareness Blog**  
-  Browse educational legal videos to learn about justice, freedom, rights, and real-world cases.
+| Feature | Description | Difficulty |
+|--------|-------------|------------|
+| 📄 **PDF Summarizer** | Summarizes uploaded legal documents and highlights key clauses. | 🟡 Medium |
+| ❓ **PDF Q&A System** | Ask legal questions based on uploaded PDFs and get contextual answers. | 🔴 Hard |
+| ⚖️ **Adversarial Legal Argument Generator** | Uses LLM to generate both prosecution and defense perspectives. | 🔴 Hard |
+| 🧾 **Document Drafter** | Auto-generates NDAs, leases, contracts, and wills. | 🔴 Hard |
+| 💬 **Legal Chatbot** | Provides general legal advice using Google Gemini LLM. | 🟡 Medium |
+| 🔍 **Case Finder** | Fetches case law and citations from Indian Kanoon. | 🔴 Hard |
+| 📰 **Legal News Aggregator** | Shows curated legal news from global & Indian sources. | 🟢 Easy |
+| 💬 **Telegram Bot Integration** | Use chatbot and document tools via Telegram. | 🔴 Hard |
+| 🌗 **Dark/Light Mode** | Toggle UI themes manually | 🟢 Easy |
+| 🌗 **Dark/Light Mode** | Toggle UI themes manually or auto-switch based on time of day. | 🟡 Medium |
+| 🔈 **Text-to-Speech (TTS)** | Listen to summaries and answers using browser voice. | 🔴 Hard |
 
 ---
 
 ## 🧠 Tech Stack
 
-| Technology         | Purpose                                      |
-|--------------------|----------------------------------------------|
-| **Flask**          | Backend API for all features                 |
-| **HTML + Tailwind**| Clean and responsive frontend UI             |
-| **Hugging Face API**| AI-powered chatbot and PDF Q&A              |
-| **Tesseract OCR**  | Extract text from scanned or image-based PDFs|
-| **LangDetect**     | Filter non-English pages from PDFs           |
+| Tech | Usage |
+|------|-------|
+| **Flask** | Backend logic and API |
+| **Google Gemini 1.5 Flash** | Legal chatbot, argument generator, document drafting |
+| **Telegram Bot API** | Chatbot interface for mobile |
+| **NewsAPI** | Fetches real-time legal news |
+| **PyMuPDF (fitz)** | PDF text extraction |
+| **BeautifulSoup** | Case law scraping |
+| **Tesseract OCR** | Scanned document support |
+| **LangDetect** | Language filtering |
+| **Tailwind CSS + JS + HTML** | Frontend design |
+| **html2pdf.js** | Downloads AI output as PDF |
 
 ---
 
-🗂️ Project Structure (GitHub-Friendly Table Version)
-File/Folder	Purpose
-app.py	Main Flask app that registers routes and blueprints
-chatbot.py	Handles /chat route for the general legal chatbot (Hugging Face)
-pdf_qa.py	Handles /pdf-qa route for PDF-specific Q&A
-summary.py	Handles /summarize route for summarizing legal PDFs
-legal_drafter.py	(Optional) Document drafting via Google Gemini (if used)
-.env	API keys and environment variables (excluded from Git)
-.gitignore	Specifies files/folders to ignore in Git
-requirements.txt	Lists Python package dependencies
-templates/	HTML pages served by Flask
-├── index.html	Homepage with feature overview
-├── blog.html	Page displaying educational legal videos
-├── pdf-summary.html	UI for the PDF summarizer tool
-├── pdf-qa.html	UI for PDF-based question answering
-└── legal-chat.html	UI for general chatbot
-static/	(Optional) CSS, JS, images
-venv/	Python virtual environment (ignored in Git)
-pdfs/	(Optional) Temporary PDF uploads
-vectorstore/	(Optional) Embedding store if vector DB is added
+## ✨ Fun Features
+
+- 🌗 **Dark/Light Mode Toggle** – Manual toggle
+- 🌗 **Dark/Light Mode Toggle** – Manual toggle + auto change based on time.
+- 🔈 **Text-to-Speech** – Audio playback of summaries and chatbot replies.
+- 🖼️ **Retro Neon Pixel UI** – Accessibility-focused and visually appealing.
+
+---
+
+## 📸 Screenshots
+
+All interface screenshots are in the [`assets/`](https://github.com/Mehvishh25/ai_legal_assistant_project/tree/main/assets) folder.  
+Explore how each feature looks: Chatbot, PDF QA, Summarizer, Legal Drafter, and News Section.
+
+---
+
+## 🔧 Setup Instructions
+
+### 1. Clone the repository
+
+```bash
+git clone https://github.com/Mehvishh25/ai_legal_assistant_project.git
+cd ai_legal_assistant_project
+
+
