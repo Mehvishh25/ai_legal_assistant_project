@@ -8,6 +8,7 @@ pypdf
 pdf2image
 pytesseract
 pdfplumber
+PyMuPDF
 
 # 🌍 Language & Text
 langdetect
