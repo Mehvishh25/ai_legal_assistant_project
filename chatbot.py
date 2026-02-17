@@ -1,18 +1,36 @@
 # chatbot.py
+
 import os
 from flask import Blueprint, request, jsonify
-from google.generativeai import configure, GenerativeModel
+from dotenv import load_dotenv
 
-chatbot_bp = Blueprint('chatbot', __name__)
+from langchain_google_genai import ChatGoogleGenerativeAI
+from langchain_core.messages import HumanMessage
 
-# Configure Gemini with API Key
+# ---------------- ENV ---------------- #
+
+load_dotenv()
+
 GOOGLE_API_KEY = os.getenv("GOOGLE_API_KEY")
-configure(api_key=GOOGLE_API_KEY)
 
-# Load model once
-model = GenerativeModel('gemini-1.5-flash')
+if not GOOGLE_API_KEY:
+    raise ValueError("GOOGLE_API_KEY not found in environment variables")
 
-@chatbot_bp.route('/chat', methods=['POST'])
+# ---------------- Blueprint ---------------- #
+
+chatbot_bp = Blueprint("chatbot", __name__)
+
+# ---------------- LLM ---------------- #
+
+llm = ChatGoogleGenerativeAI(
+    model="gemini-2.5-flash",
+    temperature=0.3,
+    max_retries=3,
+)
+
+# ---------------- Route ---------------- #
+
+@chatbot_bp.route("/chat", methods=["POST"])
 def chat():
     try:
         data = request.get_json()
@@ -21,10 +39,23 @@ def chat():
         if not question:
             return jsonify({"error": "Question is required."}), 400
 
-        prompt = f"You are a helpful legal assistant. Answer the following question in clear and simple terms:\n\n{question}\n\nAnswer:"
-        response = model.generate_content(prompt)
+        prompt = f"""
+You are a helpful legal assistant.
+Answer clearly, simply, and professionally.
 
-        return jsonify({"answer": response.text.strip()})
+Question:
+{question}
+"""
+
+        response = llm.invoke([
+            HumanMessage(content=prompt)
+        ])
+
+        return jsonify({
+            "answer": response.content.strip()
+        })
 
     except Exception as e:
-        return jsonify({"error": f"Server error: {str(e)}"}), 500
+        return jsonify({
+            "error": f"Server error: {str(e)}"
+        }), 500

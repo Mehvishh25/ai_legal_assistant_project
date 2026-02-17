@@ -1,12 +1,43 @@
 # legal_drafter.py
 from flask import Blueprint, request, jsonify
-import google.generativeai as genai
 import os
+from dotenv import load_dotenv
+
+from langchain_google_genai import ChatGoogleGenerativeAI
+from langchain_core.prompts import ChatPromptTemplate
+from langchain_core.output_parsers import StrOutputParser
+
+# ------------------------------
+# Load ENV
+# ------------------------------
+load_dotenv()
 
 drafter_bp = Blueprint('drafter', __name__)
-genai.configure(api_key=os.getenv("GEMINI_API_KEY"))
-model = genai.GenerativeModel("gemini-1.5-flash")
 
+# ------------------------------
+# LLM
+# ------------------------------
+llm = ChatGoogleGenerativeAI(
+    model="gemini-2.5-flash",
+    google_api_key=os.getenv("GOOGLE_API_KEY"),
+    temperature=0.3,
+    max_retries=3,
+    timeout=30
+)
+
+# ------------------------------
+# Prompt Template
+# ------------------------------
+prompt = ChatPromptTemplate.from_messages([
+    ("system", "You are a professional legal document drafter. Produce legally structured, formal documents."),
+    ("human", "{input}")
+])
+
+chain = prompt | llm | StrOutputParser()
+
+# ------------------------------
+# API
+# ------------------------------
 @drafter_bp.route('/draft', methods=['POST'])
 def draft():
     data = request.get_json()
@@ -19,10 +50,15 @@ def draft():
         return jsonify({"error": "Document type and inputs are required."}), 400
 
     try:
-        prompt = get_prompt(doc_type, inputs)
-        print("🧠 Prompt sent to Gemini:\n", prompt)
-        response = model.generate_content(prompt)
-        return jsonify({"document": response.text})
+        prompt_text = get_prompt(doc_type, inputs)
+        print("🧠 Prompt sent to Gemini:\n", prompt_text)
+
+        response = chain.invoke({
+            "input": prompt_text
+        })
+
+        return jsonify({"document": response})
+
     except ValueError as ve:
         return jsonify({"error": str(ve)}), 400
     except Exception as e:
@@ -30,7 +66,11 @@ def draft():
         return jsonify({"error": str(e)}), 500
 
 
+# ------------------------------
+# ORIGINAL PROMPT CONTENT (UNCHANGED)
+# ------------------------------
 def get_prompt(doc_type, inputs):
+
     if doc_type == "nda":
         return f"""
 Draft a comprehensive Non-Disclosure Agreement with the following details:

@@ -4,7 +4,7 @@ import requests
 news_bp = Blueprint("news", __name__, template_folder="../templates")
 
 # ✅ Your working NewsAPI key
-NEWS_API_KEY = "" 
+NEWS_API_KEY = "510a34343fbb4c04bdf0d9fd1bb24a43" 
 
 @news_bp.route('/legal-news')
 def legal_news():
